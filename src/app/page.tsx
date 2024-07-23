@@ -1,3 +1,9 @@
+import Section from '@/components/layouts/Section';
+
 export default async function Home() {
-  return <main className=''></main>;
+  return (
+    <main>
+      <Section>Hello World</Section>
+    </main>
+  );
 }

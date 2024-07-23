@@ -23,10 +23,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={cn('min-h-screen bg-background font-sans antialiased px-10 py-4', fontSans.variable)}>
+      <body
+        className={cn(
+          'flex flex-col h-screen w-screen bg-background font-sans antialiased px-10 py-4',
+          fontSans.variable,
+        )}
+      >
         <Providers>
           <Navbar />
-          {children}
+          <main className='flex-grow flex py-6'>{children}</main>
         </Providers>
       </body>
     </html>
