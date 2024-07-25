@@ -22,17 +22,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
-      <body
-        className={cn(
-          'flex flex-col h-screen w-screen bg-background font-sans antialiased px-10 py-4',
-          fontSans.variable,
-        )}
-      >
-        <Providers>
-          <Navbar />
-          <main className='flex-grow flex py-6'>{children}</main>
-        </Providers>
+    <html lang='en' suppressHydrationWarning>
+      <body className={cn('flex flex-col h-screen w-screen bg-background  font-sans antialiased', fontSans.variable)}>
+        <div className='h-full w-full px-10 py-4'>
+          <Providers>
+            <Navbar />
+            <main className='flex-grow flex py-6'>{children}</main>
+          </Providers>
+        </div>
       </body>
     </html>
   );

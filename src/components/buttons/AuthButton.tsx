@@ -17,7 +17,6 @@ export default function AuthButton() {
   }
   return (
     <>
-      Not signed in <br />
       <Button variant='outline' onClick={() => signIn()}>
         Sign in
       </Button>
