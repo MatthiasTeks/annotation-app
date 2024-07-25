@@ -4,6 +4,7 @@ import { Inter as FontSans } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import './globals.css';
 import { Providers } from '@/components/others/Providers';
+import Navbar from './components/navbar/Navbar';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -21,9 +22,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
-      <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
-        <Providers>{children}</Providers>
+    <html lang='en' suppressHydrationWarning>
+      <body className={cn('flex flex-col h-screen w-screen bg-background  font-sans antialiased', fontSans.variable)}>
+        <div className='h-full w-full px-10 py-4'>
+          <Providers>
+            <Navbar />
+            <main className='flex-grow flex py-6'>{children}</main>
+          </Providers>
+        </div>
       </body>
     </html>
   );
