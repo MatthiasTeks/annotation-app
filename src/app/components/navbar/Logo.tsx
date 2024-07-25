@@ -21,7 +21,7 @@ export default function Logo() {
 
   return (
     <>
-      <Image src={MyLightImage} className={theme === 'light' ? 'hidden' : ''} alt='company name' width={200} />
+      <Image src={MyLightImage} priority className={theme === 'light' ? 'hidden' : ''} alt='company name' width={200} />
       <Image src={MyDarkImage} priority className={theme === 'dark' ? 'hidden' : ''} alt='company name' width={200} />
     </>
   );

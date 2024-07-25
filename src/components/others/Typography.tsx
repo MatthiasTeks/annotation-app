@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import clsx from 'clsx';
 
 interface TypographyProps {
-  variant?: 'heading' | 'subheading' | 'paragraph';
+  variant?: 'heading' | 'subheading' | 'paragraph' | 'small';
   customClass?: string;
   className?: string;
   children: ReactNode;
@@ -22,6 +22,9 @@ export default function Typography({ variant = 'paragraph', customClass, classNa
       break;
     case 'paragraph':
       variantClasses = 'text-sm font-normal';
+      break;
+    case 'small':
+      variantClasses = 'text-xs font-light';
       break;
     default:
       variantClasses = 'text-base';
