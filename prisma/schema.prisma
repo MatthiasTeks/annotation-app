@@ -23,6 +23,7 @@ model User {
   sessions      Session[]
   // Optional for WebAuthn support
   Authenticator Authenticator[]
+  projects      AnnotationProject[]
  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -90,6 +91,8 @@ model AnnotationProject {
   createdAt     DateTime               @default(now())
   updatedAt     DateTime               @updatedAt
   situations    AnnotationSituation[]
+  userId        String?
+  user          User?                   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model AnnotationSituation {
