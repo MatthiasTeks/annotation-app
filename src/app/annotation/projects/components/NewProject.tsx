@@ -55,7 +55,7 @@ export default function NewProject() {
               </Label>
               <Input id='project-name' required name='project-name' defaultValue='My project' className='col-span-5' />
             </div>
-            <div className='grid grid-cols-6 items-center gap-4'>
+            <div className='grid grid-cols-6 items-start gap-4'>
               <Label htmlFor='project-description' className='text-left col-span-1'>
                 Description
               </Label>
