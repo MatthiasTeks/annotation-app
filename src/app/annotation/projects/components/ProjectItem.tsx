@@ -1,5 +1,4 @@
-'use client';
-
+import React from 'react';
 import Typography from '@/components/others/Typography';
 import { AnnotationProject } from '@prisma/client';
 import Link from 'next/link';
@@ -20,33 +19,34 @@ import {
   ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from '@/components/ui/context-menu';
-import { deleteProject } from '@/app/actions/actions';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import React from 'react';
+import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { getFirstAnnotationFrameByProjectId } from '@/services/annotationService';
+import DeleteProject from './DeleteProject';
+import Image from 'next/image';
 
-export default function ProjectItem({ project }: { project: AnnotationProject }) {
+export default async function ProjectItem({ project }: { project: AnnotationProject }) {
+  const projetPreview = await getFirstAnnotationFrameByProjectId(project.id);
+
   const timeAgo = formatDistanceToNow(new Date(project.updatedAt), { addSuffix: true, locale: fr });
-
-  const handleDelete = async () => {
-    await deleteProject(project.id);
-  };
 
   return (
     <AlertDialog>
       <ContextMenu>
         <ContextMenuTrigger>
           <Link href={`/annotation/projects/${project.id}`} className='flex flex-col gap-2'>
-            <div className='border border-1 border-gray-500 rounded-lg p-4 flex flex-col items-center gap-2 h-[100px] w-[250px]'></div>
+            <div className='border border-1 border-gray-500 rounded-lg p-4 flex flex-col items-center gap-2 h-[100px] w-[250px] relative'>
+              {projetPreview && (
+                <Image
+                  src={`/uploads/${projetPreview.filename}`}
+                  alt='Preview'
+                  fill
+                  sizes='(min-width: 200px) 50vw, 100vw'
+                  style={{
+                    objectFit: 'cover',
+                  }}
+                />
+              )}
+            </div>
             <div>
               <Typography>{project.name}</Typography>
               <Typography variant='small'>Édité {timeAgo}</Typography>
@@ -97,19 +97,7 @@ export default function ProjectItem({ project }: { project: AnnotationProject })
           </ContextMenuRadioGroup>
         </ContextMenuContent>
       </ContextMenu>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your account and remove your data from our
-            servers.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleDelete}>Continue</AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
+      <DeleteProject projectId={project.id} />
     </AlertDialog>
   );
 }

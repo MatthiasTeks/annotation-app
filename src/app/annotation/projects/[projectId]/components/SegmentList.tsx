@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import DialogUploadFile from './DialogUploadFile';
 
 export default async function SegmentList({ projectId }: { projectId: string }) {
   const projectIdNumber = parseInt(projectId, 10);
@@ -14,6 +15,7 @@ export default async function SegmentList({ projectId }: { projectId: string }) 
       {situations.map((situation) => (
         <p key={situation.id}>{situation.name}</p>
       ))}
+      {situations.length === 0 && <DialogUploadFile projectId={projectId} />}
     </div>
   );
 }
