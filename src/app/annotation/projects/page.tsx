@@ -19,7 +19,7 @@ const ProjectList = ({ projects }: { projects: AnnotationProject[] }) => {
       <div className='pt-10'>
         <Typography variant='subheading'>Recent</Typography>
         <hr className='border-1 border-gray-500 my-2 w-full' />
-        <div className='pt-2'>
+        <div className='pt-2 flex flex-wrap gap-4'>
           {projects.map((project) => (
             <ProjectItem key={project.id} project={project} />
           ))}

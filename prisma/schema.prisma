@@ -96,37 +96,35 @@ model AnnotationProject {
 }
 
 model AnnotationSituation {
-  id            Int                    @id @default(autoincrement())
-  name          String
-  project       AnnotationProject      @relation(fields: [projectId], references: [id])
-  projectId     Int
-  frames        AnnotationFrame[]
-  comments      AnnotationComment[]
+  id          Int                @id @default(autoincrement())
+  name        String
+  project     AnnotationProject  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId   Int
+  frames      AnnotationFrame[]
+  comments    AnnotationComment[]
 }
 
 model AnnotationFrame {
-  id            Int                    @id @default(autoincrement())
-  filename      String
-  timestamp     DateTime
-  situation     AnnotationSituation    @relation(fields: [situationId], references: [id])
-  situationId   Int
-  annotations   Annotation[]
+  id          Int                @id @default(autoincrement())
+  filename    String
+  timestamp   DateTime
+  situation   AnnotationSituation @relation(fields: [situationId], references: [id], onDelete: Cascade)
+  situationId Int
+  annotations Annotation[]
 }
 
 model Annotation {
-  id            Int                    @id @default(autoincrement())
-  name          String
-  description   String?
-  posX          Float
-  posY          Float
-  frame         AnnotationFrame        @relation(fields: [frameId], references: [id])
-  frameId       Int
+  id          Int                @id @default(autoincrement())
+  name        String
+  posX        Float
+  posY        Float
+  frame       AnnotationFrame    @relation(fields: [frameId], references: [id], onDelete: Cascade)
+  frameId     Int
 }
 
 model AnnotationComment {
-  id            Int                    @id @default(autoincrement())
-  name          String
-  description   String?
-  situation     AnnotationSituation    @relation(fields: [situationId], references: [id])
-  situationId   Int
+  id          Int                @id @default(autoincrement())
+  name        String
+  situation   AnnotationSituation @relation(fields: [situationId], references: [id], onDelete: Cascade)
+  situationId Int
 }

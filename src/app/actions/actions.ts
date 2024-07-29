@@ -28,3 +28,19 @@ export async function createProject(userId: any, formData: FormData) {
     return { message: 'Failed to create todo' };
   }
 }
+
+export async function deleteProject(projectId: number) {
+  try {
+    await prisma.annotationProject.delete({
+      where: {
+        id: projectId,
+      },
+    });
+
+    revalidatePath('/annotation/projects');
+    return { message: 'Successfully deleted project' };
+  } catch (error) {
+    console.error('Error deleting project:', error);
+    return { message: 'Failed to delete project' };
+  }
+}
