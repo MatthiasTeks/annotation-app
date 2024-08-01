@@ -1,7 +1,7 @@
 'use client';
 
 import { AnnotationSituation } from '@prisma/client';
-import DialogUploadFile from './DialogUploadFile';
+
 import Link from 'next/link';
 
 export default function SituationList({
@@ -18,7 +18,6 @@ export default function SituationList({
           <p key={situation.id}>{situation.name}</p>
         </Link>
       ))}
-      {situations.length === 0 && <DialogUploadFile projectId={projectId} />}
     </div>
   );
 }
