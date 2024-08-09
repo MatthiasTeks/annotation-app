@@ -16,7 +16,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useSession } from 'next-auth/react';
-import { createProject } from '@/app/actions/actions';
+import { createProject } from '@/app/actions/project-actions';
 import { useFormStatus } from 'react-dom';
 import { useState } from 'react';
 

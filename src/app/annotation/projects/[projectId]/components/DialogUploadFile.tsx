@@ -1,6 +1,6 @@
 'use client';
 
-import { createSituation } from '@/app/actions/actions';
+import { createSituation } from '@/app/actions/situation-actions';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,

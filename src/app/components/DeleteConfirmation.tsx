@@ -1,6 +1,5 @@
 'use client';
 
-import { deleteProject } from '@/app/actions/actions';
 import {
   AlertDialogAction,
   AlertDialogCancel,
@@ -11,9 +10,15 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 
-export default function DeleteProject({ projectId }: { projectId: number }) {
+type DeleteConfirmationProps = {
+  // eslint-disable-next-line no-unused-vars
+  onDelete: (id: number) => void;
+  id: number;
+};
+
+export default function DeleteConfirmation({ onDelete, id }: DeleteConfirmationProps) {
   const handleDelete = async () => {
-    await deleteProject(projectId);
+    await onDelete(id);
   };
 
   return (

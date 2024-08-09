@@ -1,7 +1,7 @@
 import SituationList from './SituationList';
 import DialogUploadFile from './DialogUploadFile';
 import { Separator } from '@/components/ui/separator';
-import { getSituations } from '@/app/actions/actions';
+import { getSituations } from '@/app/actions/situation-actions';
 
 export default async function SituationPanel({ projectId }: { projectId: string }) {
   const projectIdNumber = parseInt(projectId, 10);

@@ -21,8 +21,9 @@ import {
 } from '@/components/ui/context-menu';
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { getFirstAnnotationFrameByProjectId } from '@/services/annotationService';
-import DeleteProject from './DeleteProject';
 import Image from 'next/image';
+import DeleteConfirmation from '@/app/components/DeleteConfirmation';
+import { deleteProject } from '@/app/actions/project-actions';
 
 export default async function ProjectItem({ project }: { project: AnnotationProject }) {
   const projetPreview = await getFirstAnnotationFrameByProjectId(project.id);
@@ -97,7 +98,7 @@ export default async function ProjectItem({ project }: { project: AnnotationProj
           </ContextMenuRadioGroup>
         </ContextMenuContent>
       </ContextMenu>
-      <DeleteProject projectId={project.id} />
+      <DeleteConfirmation onDelete={deleteProject} id={project.id} />
     </AlertDialog>
   );
 }

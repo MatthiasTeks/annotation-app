@@ -3,7 +3,7 @@ import AnnotationList from './AnnotationList';
 
 export default function AnnotationPanel() {
   return (
-    <div className='text-white p-2'>
+    <div className='text-white p-2 h-full'>
       <div>
         <div className='space-y-1'>
           <h4 className='text-sm font-medium leading-none'>Annotations</h4>

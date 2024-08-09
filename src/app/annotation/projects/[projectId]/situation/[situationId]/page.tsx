@@ -10,5 +10,9 @@ export default async function Page({ params }: { params: { situationId: string }
     },
   });
 
-  return <div>{situation?.id && <FrameView situation={situation} />}</div>;
+  return (
+    <div className='w-full flex justify-center items-center'>
+      {situation?.id && <FrameView situation={situation} />}
+    </div>
+  );
 }

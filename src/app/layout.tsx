@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <body className={cn('flex flex-col h-screen w-screen bg-background  font-sans antialiased', fontSans.variable)}>
-        <div className='h-full w-full px-10 py-4'>
+        <div className='h-full w-full flex flex-col px-10 py-4'>
           <Providers>
             <Navbar />
             <main className='flex-grow flex py-6'>{children}</main>
