@@ -1,6 +1,7 @@
 import Section from '@/components/layouts/Section';
 import React, { Fragment } from 'react';
 import SituationPanel from './components/SituationPanel';
+import AnnotationPanel from './components/AnnotationPanel';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -14,7 +15,9 @@ export default function SituationIdLayout({ children, params }: LayoutProps) {
     <div className='relative flex gap-2 h-full w-full'>
       <Fragment>
         <div className='flex h-full w-1/6'>
-          <Section> </Section>
+          <Section>
+            <AnnotationPanel />
+          </Section>
         </div>
 
         <div className='flex h-full w-4/6'>{children}</div>

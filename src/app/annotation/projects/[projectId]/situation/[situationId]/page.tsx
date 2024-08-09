@@ -10,10 +10,5 @@ export default async function Page({ params }: { params: { situationId: string }
     },
   });
 
-  return (
-    <div>
-      <p>Selected Situation ID: {situationId}</p>
-      {situation?.id && <FrameView situation={situation} />}
-    </div>
-  );
+  return <div>{situation?.id && <FrameView situation={situation} />}</div>;
 }
