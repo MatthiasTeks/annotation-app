@@ -3,6 +3,7 @@
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { NextResponse } from 'next/server';
 import fs from 'node:fs/promises';
 
 export async function createProject(userId: any, formData: FormData) {
@@ -96,5 +97,25 @@ export async function deleteProject(projectId: number) {
   } catch (error) {
     console.error('Error deleting project:', error);
     return { message: 'Failed to delete project' };
+  }
+}
+
+export async function getSituations(projectId: number) {
+  try {
+    const situations = await prisma.annotationSituation.findMany({
+      where: {
+        projectId: projectId,
+      },
+    });
+
+    if (situations.length) {
+      console.log(situations);
+      NextResponse.redirect(`http://localhost:3000/annotation/projects/1/situation/${situations[0].id}`);
+    }
+
+    return situations;
+  } catch (error) {
+    console.error('Error getting situations:', error);
+    return null;
   }
 }

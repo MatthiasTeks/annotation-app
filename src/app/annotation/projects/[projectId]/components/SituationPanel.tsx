@@ -1,16 +1,12 @@
-import { prisma } from '@/lib/prisma';
 import SituationList from './SituationList';
 import DialogUploadFile from './DialogUploadFile';
 import { Separator } from '@/components/ui/separator';
+import { getSituations } from '@/app/actions/actions';
 
 export default async function SituationPanel({ projectId }: { projectId: string }) {
   const projectIdNumber = parseInt(projectId, 10);
 
-  const situations = await prisma.annotationSituation.findMany({
-    where: {
-      projectId: projectIdNumber,
-    },
-  });
+  const situations = await getSituations(projectIdNumber);
 
   return (
     <div className='text-white p-2'>
@@ -29,10 +25,10 @@ export default async function SituationPanel({ projectId }: { projectId: string 
         </div>
       </div>
       <div className='mt-2'>
-        {situations.length > 0 && <SituationList situations={situations} projectId={projectId} />}
+        {situations && situations.length > 0 && <SituationList situations={situations} projectId={projectId} />}
       </div>
 
-      {situations.length === 0 && <DialogUploadFile projectId={projectId} />}
+      {situations && situations.length === 0 && <DialogUploadFile projectId={projectId} />}
     </div>
   );
 }
