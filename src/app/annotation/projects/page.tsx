@@ -3,8 +3,15 @@ import NewProject from './components/NewProject';
 import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ProjectList } from './components/ProjectList';
+import { getServerSession } from 'next-auth';
+import { config } from '@/helpers/auth';
+import { redirect } from 'next/navigation';
 
 export default async function Page() {
+  const session = await getServerSession(config);
+
+  if (!session) redirect('/api/auth/signin');
+
   return (
     <div className='text-white w-full'>
       <div className='inline-block'>

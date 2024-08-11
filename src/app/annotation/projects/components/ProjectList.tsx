@@ -6,7 +6,7 @@ import { getProjectsByUserId } from '@/app/actions/project-actions';
 export const ProjectList = async () => {
   const session = await getServerSession(config);
 
-  if (!session) return <div>Loading...</div>;
+  if (!session) return null;
 
   const projects = await getProjectsByUserId(session?.user?.id);
 
