@@ -17,6 +17,7 @@
 /build
 
 # misc
+/public/uploads/*
 .DS_Store
 *.pem
 

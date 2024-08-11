@@ -1,8 +1,8 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
+import { AnnotationSituation } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
-import { NextResponse } from 'next/server';
 import fs from 'node:fs/promises';
 
 export async function createSituation(formData: FormData) {
@@ -55,17 +55,14 @@ export async function createSituation(formData: FormData) {
   revalidatePath(`/annotation/projects/${rawFormData.projectId}`);
 }
 
-export async function getSituations(projectId: number) {
+export async function getSituations(projectId: number): Promise<AnnotationSituation[] | null> {
+  let situations: AnnotationSituation[] = [];
   try {
-    const situations = await prisma.annotationSituation.findMany({
+    situations = await prisma.annotationSituation.findMany({
       where: {
         projectId: projectId,
       },
     });
-
-    if (situations.length) {
-      NextResponse.redirect(`http://localhost:3000/annotation/projects/1/situation/${situations[0].id}`);
-    }
 
     return situations;
   } catch (error) {
