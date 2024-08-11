@@ -19,9 +19,7 @@ export default function SituationIdLayout({ children, params }: LayoutProps) {
             <AnnotationPanel />
           </Section>
         </div>
-
         <div className='flex h-full w-4/6'>{children}</div>
-
         <div className='flex h-full w-1/6'>
           <Section>
             <SituationPanel projectId={projectId} />
