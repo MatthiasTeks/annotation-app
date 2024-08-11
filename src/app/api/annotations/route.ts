@@ -3,9 +3,6 @@ import { NextResponse } from 'next/server';
 
 /**
  * Handler for GET requests to fetch annotations based on the frame ID.
- *
- * @param {Request} request
- * @returns {Promise<NextResponse>}
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

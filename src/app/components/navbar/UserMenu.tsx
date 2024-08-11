@@ -1,4 +1,4 @@
-import { authOptions } from '@/services/auth-service';
+import { config } from '@/helpers/auth';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { getServerSession } from 'next-auth';
 import {
@@ -33,7 +33,7 @@ import Logout from './Logout';
 import AuthButton from '@/components/buttons/AuthButton';
 
 export default async function UserMenu() {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(config);
 
   return (
     <div>
@@ -44,7 +44,7 @@ export default async function UserMenu() {
 }
 
 const DropdownAvatar = async () => {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(config);
 
   if (!session) return '';
 

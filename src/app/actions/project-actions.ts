@@ -47,3 +47,18 @@ export async function deleteProject(projectId: number) {
     return { message: 'Failed to delete project' };
   }
 }
+
+export async function getProjectsByUserId(userId: string) {
+  try {
+    const projects = await prisma.annotationProject.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+
+    return projects;
+  } catch (error) {
+    console.error('Error getting projects by user ID:', error);
+    return null;
+  }
+}

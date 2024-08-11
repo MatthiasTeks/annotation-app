@@ -1,9 +1,8 @@
-import { prisma } from '@/lib/prisma';
-import ProjectItem from './components/ProjectItem';
 import Typography from '@/components/others/Typography';
 import NewProject from './components/NewProject';
 import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ProjectList } from './components/ProjectList';
 
 export default async function Page() {
   return (
@@ -24,18 +23,6 @@ export default async function Page() {
     </div>
   );
 }
-
-const ProjectList = async () => {
-  const projects = await prisma.annotationProject.findMany();
-
-  return (
-    <div className='pt-2 flex flex-wrap gap-4'>
-      {projects.map((project) => (
-        <ProjectItem key={project.id} project={project} />
-      ))}
-    </div>
-  );
-};
 
 const SkeletonProjectList = () => {
   return (
