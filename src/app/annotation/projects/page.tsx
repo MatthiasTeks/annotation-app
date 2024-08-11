@@ -8,7 +8,6 @@ export default async function Page() {
   return (
     <div className='text-white w-full'>
       <div className='inline-block'>
-        <h1>Hello worlds</h1>
         <Suspense fallback={<Skeleton className='w-[300px] h-[20px] rounded-xl' />}>
           <NewProject />
         </Suspense>
