@@ -3,20 +3,19 @@ import NewProject from './components/NewProject';
 import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ProjectList } from './components/ProjectList';
-import { getServerSession } from 'next-auth';
-import { config } from '@/helpers/auth';
+import { auth } from '@/helpers/auth';
 import { redirect } from 'next/navigation';
 
 export default async function Page() {
-  const session = await getServerSession(config);
+  const session = await auth();
 
-  if (!session) redirect('/api/auth/signin');
+  if (!session?.user) redirect('/');
 
   return (
     <div className='text-white w-full'>
       <div className='inline-block'>
         <Suspense fallback={<Skeleton className='w-[300px] h-[20px] rounded-xl' />}>
-          <NewProject />
+          <NewProject session={session} />
         </Suspense>
       </div>
       <div className='pt-10'>

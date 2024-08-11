@@ -1,9 +1,10 @@
-import { authOptions } from '@/services/auth-service';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { getServerSession } from 'next-auth';
+import { auth } from '@/helpers/auth';
 
 export default async function User() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
+
+  if (!session?.user) return null;
 
   return (
     <div>

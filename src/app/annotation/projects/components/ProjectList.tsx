@@ -1,12 +1,11 @@
 import ProjectItem from './ProjectItem';
-import { getServerSession } from 'next-auth';
-import { config } from '@/helpers/auth';
+import { auth } from '@/helpers/auth';
 import { getProjectsByUserId } from '@/app/actions/project-actions';
 
 export const ProjectList = async () => {
-  const session = await getServerSession(config);
+  const session = await auth();
 
-  if (!session) return null;
+  if (!session?.user?.id) return null;
 
   const projects = await getProjectsByUserId(session?.user?.id);
 

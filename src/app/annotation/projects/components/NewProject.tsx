@@ -15,19 +15,19 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { useSession } from 'next-auth/react';
 import { createProject } from '@/app/actions/project-actions';
 import { useFormStatus } from 'react-dom';
 import { useState } from 'react';
+import { Session } from 'next-auth';
 
-export default function NewProject() {
-  const { data: session } = useSession();
-
+export default function NewProject({ session }: { session: Session }) {
   const { pending } = useFormStatus();
 
-  const createProjectWithUserId = createProject.bind(null, session?.user?.id);
-
   const [open, setOpen] = useState(false);
+
+  if (!session?.user) return null;
+
+  const createProjectWithUserId = createProject.bind(null, session?.user?.id);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

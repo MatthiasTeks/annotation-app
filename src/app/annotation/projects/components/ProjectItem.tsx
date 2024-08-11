@@ -20,10 +20,10 @@ import {
   ContextMenuTrigger,
 } from '@/components/ui/context-menu';
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { getFirstAnnotationFrameByProjectId } from '@/services/annotationService';
 import Image from 'next/image';
 import DeleteConfirmation from '@/app/components/DeleteConfirmation';
 import { deleteProject } from '@/app/actions/project-actions';
+import { getFirstAnnotationFrameByProjectId } from '@/app/actions/annotation-actions';
 
 export default async function ProjectItem({ project }: { project: AnnotationProject }) {
   const projetPreview = await getFirstAnnotationFrameByProjectId(project.id);

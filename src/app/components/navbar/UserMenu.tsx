@@ -1,6 +1,5 @@
-import { config } from '@/helpers/auth';
+import { auth } from '@/helpers/auth';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { getServerSession } from 'next-auth';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,20 +32,20 @@ import Logout from './Logout';
 import AuthButton from '@/components/buttons/AuthButton';
 
 export default async function UserMenu() {
-  const session = await getServerSession(config);
+  const session = await auth();
 
   return (
     <div>
       <DropdownAvatar />
-      {!session && <AuthButton />}
+      {!session?.user && <AuthButton />}
     </div>
   );
 }
 
 const DropdownAvatar = async () => {
-  const session = await getServerSession(config);
+  const session = await auth();
 
-  if (!session) return '';
+  if (!session?.user) return null;
 
   return (
     <DropdownMenu>

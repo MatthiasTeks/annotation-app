@@ -1,25 +1,34 @@
-'use client';
-import { signIn, signOut, useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
+import { auth, signIn, signOut } from '@/helpers/auth';
 
-export default function AuthButton() {
-  const { data: session } = useSession();
+export default async function AuthButton() {
+  const session = await auth();
 
   if (session) {
     return (
-      <>
+      <form
+        action={async () => {
+          'use server';
+          await signOut();
+        }}
+      >
         {session?.user?.name} <br />
-        <Button variant='outline' onClick={() => signOut()}>
+        <Button variant='outline' type='submit'>
           Sign out
         </Button>
-      </>
+      </form>
     );
   }
   return (
-    <>
-      <Button variant='outline' onClick={() => signIn()}>
+    <form
+      action={async () => {
+        'use server';
+        await signIn('google');
+      }}
+    >
+      <Button variant='outline' type='submit'>
         Sign in
       </Button>
-    </>
+    </form>
   );
 }
