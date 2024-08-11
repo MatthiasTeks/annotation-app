@@ -1,12 +1,14 @@
-import { NextAuthOptions } from 'next-auth';
+import type { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next';
+import type { NextAuthOptions } from 'next-auth';
+import { getServerSession } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import { PrismaClient } from '@prisma/client';
 import type { Adapter } from 'next-auth/adapters';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const authOptions: NextAuthOptions = {
+export const config = {
   adapter: PrismaAdapter(prisma) as Adapter,
   providers: [
     GoogleProvider({
@@ -20,4 +22,10 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-};
+} satisfies NextAuthOptions;
+
+export function auth(
+  ...args: [GetServerSidePropsContext['req'], GetServerSidePropsContext['res']] | [NextApiRequest, NextApiResponse] | []
+) {
+  return getServerSession(...args, config);
+}
