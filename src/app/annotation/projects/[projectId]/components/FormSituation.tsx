@@ -1,5 +1,3 @@
-'use client';
-
 import { createSituation } from '@/app/actions/situation-actions';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,7 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
 
-export default function DialogNewSituation({ projectId }: { projectId: string }) {
+export default function FormSituation({ projectId }: { projectId: number }) {
   const [open, setOpen] = useState(true);
 
   return (

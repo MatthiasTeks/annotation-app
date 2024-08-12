@@ -1,7 +1,7 @@
 import SituationList from './SituationList';
-import DialogUploadFile from './DialogUploadFile';
 import { Separator } from '@/components/ui/separator';
 import { getSituations } from '@/app/actions/situation-actions';
+import SituationModal from './SituationModal';
 
 export default async function SituationPanel({ projectId }: { projectId: string }) {
   const projectIdNumber = parseInt(projectId, 10);
@@ -20,8 +20,7 @@ export default async function SituationPanel({ projectId }: { projectId: string 
       <div className='mt-2'>
         {situations && situations.length > 0 && <SituationList situations={situations} projectId={projectId} />}
       </div>
-
-      {situations && situations.length === 0 && <DialogUploadFile projectId={projectId} />}
+      <SituationModal situations={situations} projectId={projectIdNumber} />
     </div>
   );
 }
