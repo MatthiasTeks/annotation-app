@@ -24,7 +24,7 @@ export default function AnnotationList() {
 
   useEffect(() => {
     const fetchSituations = async () => {
-      const response = await fetch(`/api/annotations/?frame=${selectedFrame?.id}`);
+      const response = await fetch(`/api/annotations/?frameId=${selectedFrame?.id}`);
       const data = await response.json();
       setAnnotations(data);
     };

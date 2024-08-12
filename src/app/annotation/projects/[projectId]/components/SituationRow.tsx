@@ -3,7 +3,6 @@
 import { AnnotationSituation } from '@prisma/client';
 import { FileText } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import {
   ContextMenu,
   ContextMenuCheckboxItem,
@@ -16,12 +15,13 @@ import {
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import DeleteConfirmation from '@/app/components/DeleteConfirmation';
 import { deleteSituation } from '@/app/actions/situation-actions';
+import { useSituationStore } from '../../providers/situation-store-provider';
 
 export const SituationRow = ({ situation, projectId }: { situation: AnnotationSituation; projectId: string }) => {
-  const pathname = usePathname();
+  const selectedSituation = useSituationStore((state) => state.selectedSituation);
 
   const isActiveLink = (situation: AnnotationSituation) => {
-    return pathname === `/annotation/projects/${projectId}/situation/${situation.id}`;
+    return selectedSituation?.id === situation.id;
   };
 
   return (

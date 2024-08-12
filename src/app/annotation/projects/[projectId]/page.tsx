@@ -1,5 +1,9 @@
-import { Fragment } from 'react';
+import FrameView from './components/FrameView';
 
 export default function Page() {
-  return <Fragment></Fragment>;
+  return (
+    <div className='w-full flex justify-center items-center'>
+      <FrameView />
+    </div>
+  );
 }
