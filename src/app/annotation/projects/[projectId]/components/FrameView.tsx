@@ -1,22 +1,44 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useSituationStore } from '../../providers/situation-store-provider';
-import { AnnotationFrame } from '@prisma/client';
 import Frame from './Frame';
 import { useFrameStore } from '../../providers/frame-store-provider';
+import { calculateDisplayStreamSizes, getNativeCoordinatesFromClick } from '@/services/frame-service';
+import { useResizeDetector } from 'react-resize-detector';
+import { useActionStore } from '../../providers/annotation-store-provider';
+import AnnotationLayer from './AnnotationLayer';
 
 export default function FrameView() {
+  const userAction = useActionStore((state) => state.userAction);
   const selectedSituation = useSituationStore((state) => state.selectedSituation);
   const setSelectedFrame = useFrameStore((state) => state.setSelectedFrame);
 
-  const [frames, setFrames] = useState<AnnotationFrame[]>([]);
+  const [clickedPosition, setClickedPosition] = useState<{ position: { x: number; y: number } } | null>(null);
+  const [frameSizes, setFrameSizes] = useState({ width: 0, height: 0, ratio: 0 });
+
+  const { width, height, ref: containerRef } = useResizeDetector();
+
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const displaySizes = useMemo(() => {
+    const { width: frameWidth, height: frameHeight, ratio: frameRatio } = frameSizes;
+    return calculateDisplayStreamSizes(frameWidth, frameHeight, frameRatio, width, height);
+  }, [width, height, frameSizes]);
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (userAction !== 'editingSegment') return;
+    const nativeCoordinates = getNativeCoordinatesFromClick(canvasRef, e, frameSizes, displaySizes);
+    if (nativeCoordinates) {
+      setClickedPosition({ position: nativeCoordinates });
+    }
+  };
 
   useEffect(() => {
     const fetchFrames = async () => {
       const response = await fetch(`/api/frames/?situationId=${selectedSituation?.id}`);
       const frames = await response.json();
-      setFrames(frames);
+
       setSelectedFrame(frames[0]);
     };
 
@@ -25,5 +47,17 @@ export default function FrameView() {
     }
   }, [selectedSituation, setSelectedFrame]);
 
-  return <div className='text-white w-full h-full'>{frames?.length ? <Frame /> : null}</div>;
+  return (
+    <div
+      className='flex flex-col items-center justify-center flex-auto overflow-hidden w-full h-full'
+      onClick={handleClick}
+      ref={containerRef}
+    >
+      <div style={{ width: displaySizes.width, height: displaySizes.height }} className='relative w-full h-full'>
+        <AnnotationLayer clickedPosition={clickedPosition} displaySizes={displaySizes}>
+          <Frame canvasRef={canvasRef} setFrameSizes={setFrameSizes} />
+        </AnnotationLayer>
+      </div>
+    </div>
+  );
 }

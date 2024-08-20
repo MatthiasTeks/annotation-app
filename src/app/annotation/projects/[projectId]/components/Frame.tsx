@@ -1,21 +1,17 @@
 'use client';
 
 import { useFrameStore } from '../../providers/frame-store-provider';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useResizeDetector } from 'react-resize-detector';
-import { calculateDisplayStreamSizes, drawFrame } from '@/services/frame-service';
+import React, { useEffect } from 'react';
+import { drawFrame } from '@/services/frame-service';
 
-export default function Frame() {
+type Props = {
+  canvasRef: React.RefObject<HTMLCanvasElement>;
+  // eslint-disable-next-line no-unused-vars
+  setFrameSizes: (frameSizes: { width: number; height: number; ratio: number }) => void;
+};
+
+export default function Frame({ canvasRef, setFrameSizes }: Props) {
   const selectedFrame = useFrameStore((state) => state.selectedFrame);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [frameSizes, setFrameSizes] = useState({ width: 0, height: 0, ratio: 0 });
-  const { width, height, ref: containerRef } = useResizeDetector();
-
-  // Size that maintains responsiveness while preserving the aspect ratio of the base frame.
-  const displaySizes = useMemo(() => {
-    const { width: frameWidth, height: frameHeight, ratio: frameRatio } = frameSizes;
-    return calculateDisplayStreamSizes(frameWidth, frameHeight, frameRatio, width, height);
-  }, [width, height, frameSizes]);
 
   useEffect(() => {
     if (selectedFrame === null) return;
@@ -28,16 +24,7 @@ export default function Frame() {
     };
 
     drawAndSetFrameSizes();
-  }, [selectedFrame]);
+  }, [canvasRef, selectedFrame, setFrameSizes]);
 
-  return (
-    <div
-      className='flex flex-col items-center justify-center flex-auto overflow-hidden w-full h-full'
-      ref={containerRef}
-    >
-      <div style={{ width: displaySizes.width, height: displaySizes.height }} className='relative w-full h-full'>
-        <canvas ref={canvasRef} className='w-full h-full' />
-      </div>
-    </div>
-  );
+  return <canvas id='annotation-canvas' ref={canvasRef} className='w-full h-full' />;
 }

@@ -69,3 +69,36 @@ export const calculateDisplayStreamSizes = (
     };
   }
 };
+
+// Function to get the coordinates of the mouse click relative to the image container
+export const getRelativeImageCoordinates = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const rect = (e.target as HTMLDivElement).getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  return { x, y };
+};
+
+// Function to translate display coordinates into native image coordinates
+export const getNativeImageCoordinates = (
+  displayCoordinates: { x: number; y: number },
+  cameraDimensions: { width: number; height: number },
+  displayDimensions: { width: number; height: number },
+) => {
+  const displayRatio = cameraDimensions.width / displayDimensions.width;
+  return { x: displayCoordinates.x * displayRatio, y: displayCoordinates.y * displayRatio };
+};
+
+// Generic function to handle a click on the image frame, returning the native coordinates
+export const getNativeCoordinatesFromClick = (
+  canvasRef: React.RefObject<HTMLCanvasElement>,
+  e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  frameSizes: { width: number; height: number },
+  displaySizes: { width: number; height: number },
+) => {
+  if (canvasRef.current) {
+    const clickCoordinates = getRelativeImageCoordinates(e);
+    const nativeCoordinates = getNativeImageCoordinates(clickCoordinates, frameSizes, displaySizes);
+    return nativeCoordinates;
+  }
+  return null;
+};
