@@ -13,7 +13,7 @@ export default function SituationList({ situations }: { situations: AnnotationSi
   }, [setSelectedSituation, situations]);
 
   return (
-    <div className='text-white'>
+    <div className='text-white flex flex-col gap-2'>
       {situations.map((situation) => (
         <SituationRow key={situation.id} situation={situation} />
       ))}

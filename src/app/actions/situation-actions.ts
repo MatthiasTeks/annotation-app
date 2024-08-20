@@ -5,7 +5,7 @@ import { AnnotationSituation } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import fs from 'node:fs/promises';
 
-export async function createSituation(formData: FormData) {
+export async function createSituation(prevState: any, formData: FormData) {
   const rawFormData = {
     projectId: formData.get('project-id'),
     name: formData.get('project-name'),
@@ -47,12 +47,13 @@ export async function createSituation(formData: FormData) {
         situation: true,
       },
     });
+
+    revalidatePath(`/annotation/projects/${projectId}`);
+    return { success: true };
   } catch (error) {
     console.error(error);
-    return { message: 'Failed to create situation' };
+    return { success: false };
   }
-
-  revalidatePath(`/annotation/projects/${rawFormData.projectId}`);
 }
 
 export async function getSituations(projectId: number): Promise<AnnotationSituation[] | null> {

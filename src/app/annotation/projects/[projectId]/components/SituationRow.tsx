@@ -32,7 +32,11 @@ export const SituationRow = ({ situation }: { situation: AnnotationSituation }) 
     <AlertDialog>
       <ContextMenu>
         <ContextMenuTrigger>
-          <div key={situation.id} className={`${isActiveLink(situation) ? 'text-primary' : ''}`} onClick={handleClick}>
+          <div
+            key={situation.id}
+            className={`${isActiveLink(situation) ? 'text-primary' : ''} cursor-pointer`}
+            onClick={handleClick}
+          >
             <p key={situation.id} className='text-sm flex items-center gap-2'>
               <FileText className='mr-2 h-4 w-4' />
               {situation.name}
