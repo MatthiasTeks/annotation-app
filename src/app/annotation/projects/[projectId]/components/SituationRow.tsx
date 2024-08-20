@@ -2,7 +2,6 @@
 
 import { AnnotationSituation } from '@prisma/client';
 import { FileText } from 'lucide-react';
-import Link from 'next/link';
 import {
   ContextMenu,
   ContextMenuCheckboxItem,
@@ -17,27 +16,28 @@ import DeleteConfirmation from '@/app/components/DeleteConfirmation';
 import { deleteSituation } from '@/app/actions/situation-actions';
 import { useSituationStore } from '../../providers/situation-store-provider';
 
-export const SituationRow = ({ situation, projectId }: { situation: AnnotationSituation; projectId: string }) => {
+export const SituationRow = ({ situation }: { situation: AnnotationSituation }) => {
   const selectedSituation = useSituationStore((state) => state.selectedSituation);
+  const setSelectedSituation = useSituationStore((state) => state.setSelectedSituation);
 
   const isActiveLink = (situation: AnnotationSituation) => {
     return selectedSituation?.id === situation.id;
+  };
+
+  const handleClick = () => {
+    setSelectedSituation(situation);
   };
 
   return (
     <AlertDialog>
       <ContextMenu>
         <ContextMenuTrigger>
-          <Link
-            href={`${projectId}/situation/${situation.id}`}
-            key={situation.id}
-            className={`link ${isActiveLink(situation) ? 'text-primary' : ''}`}
-          >
+          <div key={situation.id} className={`${isActiveLink(situation) ? 'text-primary' : ''}`} onClick={handleClick}>
             <p key={situation.id} className='text-sm flex items-center gap-2'>
               <FileText className='mr-2 h-4 w-4' />
               {situation.name}
             </p>
-          </Link>
+          </div>
         </ContextMenuTrigger>
         <ContextMenuContent className='w-64'>
           <ContextMenuItem inset>

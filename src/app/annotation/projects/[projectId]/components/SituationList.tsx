@@ -5,13 +5,7 @@ import { SituationRow } from './SituationRow';
 import { useEffect } from 'react';
 import { useSituationStore } from '../../providers/situation-store-provider';
 
-export default function SituationList({
-  situations,
-  projectId,
-}: {
-  situations: AnnotationSituation[];
-  projectId: string;
-}) {
+export default function SituationList({ situations }: { situations: AnnotationSituation[] }) {
   const setSelectedSituation = useSituationStore((state) => state.setSelectedSituation);
 
   useEffect(() => {
@@ -21,7 +15,7 @@ export default function SituationList({
   return (
     <div className='text-white'>
       {situations.map((situation) => (
-        <SituationRow key={situation.id} situation={situation} projectId={projectId} />
+        <SituationRow key={situation.id} situation={situation} />
       ))}
     </div>
   );

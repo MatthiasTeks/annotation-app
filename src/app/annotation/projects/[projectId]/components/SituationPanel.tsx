@@ -17,9 +17,7 @@ export default async function SituationPanel({ projectId }: { projectId: string 
         </div>
         <Separator className='my-4' />
       </div>
-      <div className='mt-2'>
-        {situations && situations.length > 0 && <SituationList situations={situations} projectId={projectId} />}
-      </div>
+      <div className='mt-2'>{situations && situations.length > 0 && <SituationList situations={situations} />}</div>
       <SituationModal situations={situations} projectId={projectIdNumber} />
     </div>
   );
