@@ -1,22 +1,43 @@
 'use client';
 
-import { useFrameStore } from '@/app/annotation/projects/providers/frame-store-provider';
-import { AnnotationFrame } from '@prisma/client';
-import Image from 'next/image';
-import { useEffect } from 'react';
+import { useFrameStore } from '../../providers/frame-store-provider';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useResizeDetector } from 'react-resize-detector';
+import { calculateDisplayStreamSizes, drawFrame } from '@/services/frame-service';
 
-export default function Frame({ frames }: { frames: AnnotationFrame[] }) {
-  const setSelectedFrame = useFrameStore((state) => state.setSelectedFrame);
+export default function Frame() {
+  const selectedFrame = useFrameStore((state) => state.selectedFrame);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [frameSizes, setFrameSizes] = useState({ width: 0, height: 0, ratio: 0 });
+  const { width, height, ref: containerRef } = useResizeDetector();
+
+  // Size that maintains responsiveness while preserving the aspect ratio of the base frame.
+  const displaySizes = useMemo(() => {
+    const { width: frameWidth, height: frameHeight, ratio: frameRatio } = frameSizes;
+    return calculateDisplayStreamSizes(frameWidth, frameHeight, frameRatio, width, height);
+  }, [width, height, frameSizes]);
 
   useEffect(() => {
-    if (frames.length > 0) {
-      setSelectedFrame(frames[0]);
-    }
-  }, [frames, setSelectedFrame]);
+    if (selectedFrame === null) return;
+
+    const drawAndSetFrameSizes = async () => {
+      const sizes = await drawFrame({ selectedFrame, canvasRef });
+      if (sizes) {
+        setFrameSizes(sizes);
+      }
+    };
+
+    drawAndSetFrameSizes();
+  }, [selectedFrame]);
 
   return (
-    <div>
-      <Image src={`/uploads/${frames[0].filename}`} width={500} height={500} alt='annotation' />
+    <div
+      className='flex flex-col items-center justify-center flex-auto overflow-hidden w-full h-full'
+      ref={containerRef}
+    >
+      <div style={{ width: displaySizes.width, height: displaySizes.height }} className='relative w-full h-full'>
+        <canvas ref={canvasRef} className='w-full h-full' />
+      </div>
     </div>
   );
 }
