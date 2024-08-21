@@ -95,9 +95,9 @@ export async function createAnnotation(prevState: any, formData: FormData) {
       },
     });
 
-    return annotation;
+    return { annotation: annotation };
   } catch (error) {
     console.error('Error creating annotation:', error);
-    throw new Error('Failed to create annotation. Please try again later.');
+    return { annotation: null };
   }
 }

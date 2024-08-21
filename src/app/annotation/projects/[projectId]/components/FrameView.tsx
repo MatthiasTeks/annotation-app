@@ -29,6 +29,7 @@ export default function FrameView() {
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (userAction !== 'editingSegment') return;
+    if (clickedPosition !== null) return;
 
     const nativeCoordinates = getNativeCoordinatesFromClick(canvasRef, e, frameSizes, displaySizes);
     const globalCoordinates = { x: e.clientX, y: e.clientY };
@@ -57,11 +58,18 @@ export default function FrameView() {
   return (
     <div
       className='flex flex-col items-center justify-center flex-auto overflow-hidden w-full h-full'
-      onClick={handleClick}
       ref={containerRef}
     >
-      <div style={{ width: displaySizes.width, height: displaySizes.height }} className='relative w-full h-full'>
-        <AnnotationLayer clickedPosition={clickedPosition} displaySizes={displaySizes}>
+      <div
+        style={{ width: displaySizes.width, height: displaySizes.height }}
+        onClick={handleClick}
+        className='relative w-full h-full'
+      >
+        <AnnotationLayer
+          clickedPosition={clickedPosition}
+          setClickedPosition={setClickedPosition}
+          displaySizes={displaySizes}
+        >
           <Frame canvasRef={canvasRef} setFrameSizes={setFrameSizes} />
         </AnnotationLayer>
       </div>

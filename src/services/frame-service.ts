@@ -102,3 +102,35 @@ export const getNativeCoordinatesFromClick = (
   }
   return null;
 };
+
+export function calculateModalPosition(
+  clickPosition: { x: number; y: number },
+  modalElement: HTMLDivElement,
+  offset: number = 20,
+): { top: number; left: number } {
+  const modalRect = modalElement.getBoundingClientRect();
+
+  let top = clickPosition.y + offset;
+  let left = clickPosition.x + offset;
+
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+
+  if (left + modalRect.width > viewportWidth) {
+    left = clickPosition.x - modalRect.width - 20;
+  }
+
+  if (top + modalRect.height > viewportHeight) {
+    top = clickPosition.y - modalRect.height - 20;
+  }
+
+  if (left < 0) {
+    left = 20;
+  }
+
+  if (top < 0) {
+    top = 20;
+  }
+
+  return { top, left };
+}

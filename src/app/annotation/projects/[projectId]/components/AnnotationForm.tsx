@@ -2,8 +2,21 @@ import { Button } from '@/components/ui/button';
 import { DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { useFrameStore } from '../../providers/frame-store-provider';
 
-export default function AnnotationForm({ action }: { action: any }) {
+type Props = {
+  // eslint-disable-next-line no-unused-vars
+  action: (payload: FormData) => void;
+  xPosition: number;
+  yPosition: number;
+};
+
+export default function AnnotationForm({ action, xPosition, yPosition }: Props) {
+  const selectedFrame = useFrameStore((state) => state.selectedFrame);
+
+  if (!selectedFrame) return null;
+
   return (
     <form action={action}>
       <div className='grid gap-4 py-4'>
@@ -15,16 +28,24 @@ export default function AnnotationForm({ action }: { action: any }) {
             id='annotation-name'
             required
             name='annotation-name'
-            defaultValue='My project'
+            defaultValue='My annotation'
             className='col-span-5'
           />
         </div>
-        <div className='grid grid-cols-6 items-center gap-4'>
-          <Label htmlFor='project-file' className='text-left col-span-1'>
-            File
+        <div className='grid grid-cols-6 items-start gap-4'>
+          <Label htmlFor='annotation-description' className='text-left col-span-1'>
+            Description
           </Label>
-          <Input id='project-file' name='project-file' type='file' className='col-span-5' required />
-          <input id='project-id' name='project-id' className='sr-only' type='text'></input>
+          <Textarea
+            id='annotation-description'
+            name='annotation-description'
+            placeholder='Type your description here.'
+            className='col-span-5'
+            required
+          />
+          <input id='x-position' name='x-position' className='sr-only' type='text' defaultValue={xPosition}></input>
+          <input id='y-position' name='y-position' className='sr-only' type='text' defaultValue={yPosition}></input>
+          <input id='frame-id' name='frame-id' className='sr-only' type='text' defaultValue={selectedFrame.id}></input>
         </div>
       </div>
       <DialogFooter>
