@@ -4,10 +4,11 @@ import { useActionStore } from '../../providers/annotation-store-provider';
 import { useFormState } from 'react-dom';
 import AnnotationForm from './AnnotationForm';
 import { createSituation } from '@/app/actions/situation-actions';
+import { ClickedPosition } from '@/types/types';
 
 type Props = {
   displaySizes: { width: number; height: number };
-  clickedPosition: { x: number; y: number } | null;
+  clickedPosition: ClickedPosition | null;
 };
 
 export default function AnnotationModal({ displaySizes, clickedPosition }: Props) {
@@ -32,33 +33,13 @@ export default function AnnotationModal({ displaySizes, clickedPosition }: Props
     if (clickedPosition) {
       const positionModal = () => {
         if (modalRef.current) {
-          const { x, y } = clickedPosition;
+          const { globalPosition } = clickedPosition;
 
-          const canvas = document.querySelector<HTMLCanvasElement>('canvas');
+          const top = globalPosition.y;
+          const left = globalPosition.x;
 
-          if (canvas) {
-            const rect = modalRef.current.getBoundingClientRect();
-            const canvasRect = canvas.getBoundingClientRect();
-
-            const globalX = canvasRect.left + x;
-            const globalY = canvasRect.top + y;
-
-            let top = globalY - rect.height / 2;
-            let left = globalX + 10;
-
-            if (left + rect.width > window.innerWidth) {
-              left = globalX - rect.width - 10;
-            }
-
-            if (top < 0) {
-              top = globalY + 10;
-            } else if (top + rect.height > window.innerHeight) {
-              top = window.innerHeight - rect.height - 10;
-            }
-
-            setModalTop(top);
-            setModalLeft(left);
-          }
+          setModalTop(top);
+          setModalLeft(left);
         }
       };
 
@@ -75,7 +56,7 @@ export default function AnnotationModal({ displaySizes, clickedPosition }: Props
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent ref={modalRef} style={{ position: 'absolute', top: modalTop, left: modalLeft }}>
+      <DialogContent ref={modalRef} style={{ position: 'absolute', top: modalTop, left: modalLeft, transform: 'none' }}>
         <DialogHeader>
           <DialogTitle>New situation</DialogTitle>
           <DialogDescription>Make changes to your profile here. Click save when you&pos;re done.</DialogDescription>

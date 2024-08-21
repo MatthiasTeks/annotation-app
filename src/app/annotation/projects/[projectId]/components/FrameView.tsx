@@ -8,13 +8,14 @@ import { calculateDisplayStreamSizes, getNativeCoordinatesFromClick } from '@/se
 import { useResizeDetector } from 'react-resize-detector';
 import { useActionStore } from '../../providers/annotation-store-provider';
 import AnnotationLayer from './AnnotationLayer';
+import { ClickedPosition } from '@/types/types';
 
 export default function FrameView() {
   const userAction = useActionStore((state) => state.userAction);
   const selectedSituation = useSituationStore((state) => state.selectedSituation);
   const setSelectedFrame = useFrameStore((state) => state.setSelectedFrame);
 
-  const [clickedPosition, setClickedPosition] = useState<{ position: { x: number; y: number } } | null>(null);
+  const [clickedPosition, setClickedPosition] = useState<ClickedPosition | null>(null);
   const [frameSizes, setFrameSizes] = useState({ width: 0, height: 0, ratio: 0 });
 
   const { width, height, ref: containerRef } = useResizeDetector();
@@ -28,9 +29,15 @@ export default function FrameView() {
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (userAction !== 'editingSegment') return;
+
     const nativeCoordinates = getNativeCoordinatesFromClick(canvasRef, e, frameSizes, displaySizes);
+    const globalCoordinates = { x: e.clientX, y: e.clientY };
+
     if (nativeCoordinates) {
-      setClickedPosition({ position: nativeCoordinates });
+      setClickedPosition({
+        position: nativeCoordinates,
+        globalPosition: globalCoordinates,
+      });
     }
   };
 
