@@ -55,6 +55,12 @@ const annotationSchema = z.object({
     .transform((val) => parseInt(val, 10))
     .refine((val) => !isNaN(val), { message: 'Frame ID must be a valid number' }),
 
+  projectId: z
+    .string()
+    .min(1, 'Project ID is required')
+    .transform((val) => parseInt(val, 10))
+    .refine((val) => !isNaN(val), { message: 'Project ID must be a valid number' }),
+
   posX: z
     .string()
     .min(1, 'Position X is required')
@@ -73,6 +79,7 @@ const annotationSchema = z.object({
 export async function createAnnotation(prevState: any, formData: FormData) {
   const rawFormData = {
     frameId: formData.get('frame-id'),
+    projectId: formData.get('project-id'),
     posX: formData.get('x-position'),
     posY: formData.get('y-position'),
     name: formData.get('annotation-name'),
@@ -95,6 +102,7 @@ export async function createAnnotation(prevState: any, formData: FormData) {
       },
     });
 
+    revalidatePath(`/annotation/projects/${rawFormData.projectId}`);
     return { annotation: annotation };
   } catch (error) {
     console.error('Error creating annotation:', error);

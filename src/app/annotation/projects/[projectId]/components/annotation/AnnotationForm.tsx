@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useFrameStore } from '../../../providers/frame-store-provider';
+import { useParams } from 'next/navigation';
 
 type Props = {
   // eslint-disable-next-line no-unused-vars
@@ -13,6 +14,7 @@ type Props = {
 };
 
 export default function AnnotationForm({ action, xPosition, yPosition }: Props) {
+  const params = useParams<{ projectId: string }>();
   const selectedFrame = useFrameStore((state) => state.selectedFrame);
 
   if (!selectedFrame) return null;
@@ -46,6 +48,13 @@ export default function AnnotationForm({ action, xPosition, yPosition }: Props) 
           <input id='x-position' name='x-position' className='sr-only' type='text' defaultValue={xPosition}></input>
           <input id='y-position' name='y-position' className='sr-only' type='text' defaultValue={yPosition}></input>
           <input id='frame-id' name='frame-id' className='sr-only' type='text' defaultValue={selectedFrame.id}></input>
+          <input
+            id='project-id'
+            name='project-id'
+            className='sr-only'
+            type='text'
+            defaultValue={params.projectId}
+          ></input>
         </div>
       </div>
       <DialogFooter>
