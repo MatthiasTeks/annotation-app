@@ -7,7 +7,7 @@ import { useFrameStore } from '../../providers/frame-store-provider';
 import { calculateDisplayStreamSizes, getNativeCoordinatesFromClick } from '@/services/frame-service';
 import { useResizeDetector } from 'react-resize-detector';
 import { useActionStore } from '../../providers/annotation-store-provider';
-import AnnotationLayer from './AnnotationLayer';
+import AnnotationLayer from './annotation/AnnotationLayer';
 import { ClickedPosition } from '@/types/types';
 
 export default function FrameView() {

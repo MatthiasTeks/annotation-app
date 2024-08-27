@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import React, { useEffect, useRef, useState } from 'react';
-import { useActionStore } from '../../providers/annotation-store-provider';
+import { useActionStore } from '../../../providers/annotation-store-provider';
 import { useFormState } from 'react-dom';
 import AnnotationForm from './AnnotationForm';
 import { ClickedPosition } from '@/types/types';

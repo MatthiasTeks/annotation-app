@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useFrameStore } from '../../providers/frame-store-provider';
+import { useFrameStore } from '../../../providers/frame-store-provider';
 import { CrosshairIcon } from 'lucide-react';
 import { Annotation } from '@prisma/client';
 import {

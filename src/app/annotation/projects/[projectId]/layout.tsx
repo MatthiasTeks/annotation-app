@@ -1,7 +1,7 @@
 import Section from '@/components/layouts/Section';
 import React, { Fragment } from 'react';
 import SituationPanel from './components/SituationPanel';
-import AnnotationPanel from './components/AnnotationPanel';
+import AnnotationPanel from './components/annotation/AnnotationPanel';
 import Toolbar from './components/Toolbar';
 
 type LayoutProps = {

@@ -3,7 +3,7 @@ import { DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { useFrameStore } from '../../providers/frame-store-provider';
+import { useFrameStore } from '../../../providers/frame-store-provider';
 
 type Props = {
   // eslint-disable-next-line no-unused-vars
