@@ -14,7 +14,7 @@ import {
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import DeleteConfirmation from '@/app/components/DeleteConfirmation';
 import { deleteSituation } from '@/app/actions/situation-actions';
-import { useSituationStore } from '../../providers/situation-store-provider';
+import { useSituationStore } from '../../../providers/situation-store-provider';
 
 export const SituationRow = ({ situation }: { situation: AnnotationSituation }) => {
   const selectedSituation = useSituationStore((state) => state.selectedSituation);
