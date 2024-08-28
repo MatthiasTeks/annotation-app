@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useFrameStore } from '../../../providers/frame-store-provider';
+import { useEffect } from 'react';
+import { useFrameStore } from '../../../../providers/frame-store-provider';
 import { CrosshairIcon } from 'lucide-react';
 import { Annotation } from '@prisma/client';
 import {
@@ -16,26 +16,28 @@ import {
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { deleteAnnotation } from '@/app/actions/annotation-actions';
 import DeleteConfirmation from '@/app/components/DeleteConfirmation';
+import { fetchAnnotations } from '@/services/annotation-service';
+import { useAnnotationsStore } from '@/app/annotation/providers/annotation-store-provider';
 
 export default function AnnotationList() {
   const selectedFrame = useFrameStore((state) => state.selectedFrame);
 
-  const [annotations, setAnnotations] = useState<Annotation[]>([]);
+  const annotations = useAnnotationsStore((state) => state.annotations);
+  const setAnnotations = useAnnotationsStore((state) => state.setAnnotations);
 
   useEffect(() => {
     const fetchSituations = async () => {
-      const response = await fetch(`/api/annotations/?frameId=${selectedFrame?.id}`);
-      const data = await response.json();
+      if (!selectedFrame?.id) return;
+
+      const data = await fetchAnnotations(selectedFrame.id);
       setAnnotations(data);
     };
 
-    if (selectedFrame?.id) {
-      fetchSituations();
-    }
-  }, [selectedFrame]);
+    fetchSituations();
+  }, [selectedFrame, setAnnotations]);
 
   return (
-    <div className='text-white p-2'>
+    <div className='text-white p-2 gap-2 flex flex-col'>
       {annotations?.length > 0 &&
         annotations.map((annotation) => <AnnotationRow key={annotation.id} annotation={annotation} />)}
     </div>
