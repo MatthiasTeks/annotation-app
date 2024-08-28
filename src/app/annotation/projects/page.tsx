@@ -1,4 +1,4 @@
-import Typography from '@/components/others/Typography';
+import Typography from '@/components/Typography';
 import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ProjectList } from './components/ProjectList';

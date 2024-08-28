@@ -1,5 +1,5 @@
 import React from 'react';
-import Typography from '@/components/others/Typography';
+import Typography from '@/components/Typography';
 import { AnnotationProject } from '@prisma/client';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/context-menu';
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import Image from 'next/image';
-import DeleteConfirmation from '@/app/components/DeleteConfirmation';
+import DeleteModal from '@/components/DeleteModal';
 import { deleteProject } from '@/app/actions/project-actions';
 import { getFirstAnnotationFrameByProjectId } from '@/app/actions/annotation-actions';
 
@@ -98,7 +98,7 @@ export default async function ProjectItem({ project }: { project: AnnotationProj
           </ContextMenuRadioGroup>
         </ContextMenuContent>
       </ContextMenu>
-      <DeleteConfirmation onDelete={deleteProject} id={project.id} />
+      <DeleteModal onDelete={deleteProject} id={project.id} />
     </AlertDialog>
   );
 }

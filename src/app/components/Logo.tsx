@@ -1,8 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import MyLightImage from '../../../../public/logo.webp';
-import MyDarkImage from '../../../../public/logo-black.webp';
+import MyLightImage from '../../../public/logo.webp';
+import MyDarkImage from '../../../public/logo-black.webp';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 

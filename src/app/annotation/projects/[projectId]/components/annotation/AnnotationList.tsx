@@ -15,10 +15,10 @@ import {
 } from '@/components/ui/context-menu';
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { deleteAnnotation } from '@/app/actions/annotation-actions';
-import DeleteConfirmation from '@/app/components/DeleteConfirmation';
+import DeleteModal from '@/components/DeleteModal';
 import { fetchAnnotations } from '@/services/annotation-service';
 import { useAnnotationsStore } from '@/app/annotation/providers/annotation-store-provider';
-import Typography from '@/components/others/Typography';
+import Typography from '@/components/Typography';
 
 export default function AnnotationList() {
   const selectedFrame = useFrameStore((state) => state.selectedFrame);
@@ -76,7 +76,7 @@ const AnnotationRow = ({ annotation }: { annotation: Annotation }) => {
           <ContextMenuSeparator />
         </ContextMenuContent>
       </ContextMenu>
-      <DeleteConfirmation onDelete={deleteAnnotation} id={annotation.id} />
+      <DeleteModal onDelete={deleteAnnotation} id={annotation.id} />
     </AlertDialog>
   );
 };

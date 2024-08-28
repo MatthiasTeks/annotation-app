@@ -1,6 +1,6 @@
 'use client';
 
-import Typography from '@/components/others/Typography';
+import Typography from '@/components/Typography';
 import {
   Dialog,
   DialogContent,

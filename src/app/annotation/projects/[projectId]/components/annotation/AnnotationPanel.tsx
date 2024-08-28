@@ -1,6 +1,6 @@
 import { Separator } from '@/components/ui/separator';
 import AnnotationList from './AnnotationList';
-import Typography from '@/components/others/Typography';
+import Typography from '@/components/Typography';
 
 export default function AnnotationPanel() {
   return (

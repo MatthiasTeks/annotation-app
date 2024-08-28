@@ -12,7 +12,7 @@ import {
   ContextMenuTrigger,
 } from '@/components/ui/context-menu';
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import DeleteConfirmation from '@/app/components/DeleteConfirmation';
+import DeleteModal from '@/components/DeleteModal';
 import { deleteSituation } from '@/app/actions/situation-actions';
 import { useSituationStore } from '../../../../providers/situation-store-provider';
 
@@ -64,7 +64,7 @@ export const SituationRow = ({ situation }: { situation: AnnotationSituation }) 
           <ContextMenuSeparator />
         </ContextMenuContent>
       </ContextMenu>
-      <DeleteConfirmation onDelete={deleteSituation} id={situation.id} />
+      <DeleteModal onDelete={deleteSituation} id={situation.id} />
     </AlertDialog>
   );
 };

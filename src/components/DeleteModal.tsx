@@ -10,12 +10,12 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 
-type DeleteConfirmationProps = {
+type Props = {
   onDelete: (id: number) => void;
   id: number;
 };
 
-export default function DeleteConfirmation({ onDelete, id }: DeleteConfirmationProps) {
+export default function DeleteModal({ onDelete, id }: Props) {
   const handleDelete = async () => {
     await onDelete(id);
   };

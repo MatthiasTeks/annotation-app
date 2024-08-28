@@ -29,7 +29,7 @@ import {
   Users,
 } from 'lucide-react';
 import Logout from './Logout';
-import AuthButton from '@/components/buttons/AuthButton';
+import AuthButton from './AuthButton';
 
 export default async function UserMenu() {
   const session = await auth();

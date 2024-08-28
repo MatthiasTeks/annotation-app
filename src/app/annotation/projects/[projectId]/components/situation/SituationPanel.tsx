@@ -2,7 +2,7 @@ import SituationList from './SituationList';
 import { Separator } from '@/components/ui/separator';
 import { getSituations } from '@/app/actions/situation-actions';
 import SituationModal from './SituationModal';
-import Typography from '@/components/others/Typography';
+import Typography from '@/components/Typography';
 
 export default async function SituationPanel({ projectId }: { projectId: string }) {
   const projectIdNumber = parseInt(projectId, 10);
