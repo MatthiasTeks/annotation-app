@@ -52,13 +52,15 @@ export default function FrameView() {
     if (selectedSituation?.id) {
       fetchFrames();
     }
+  }, [selectedSituation, setSelectedFrame]);
 
+  useEffect(() => {
     return () => {
       setSelectedFrame(null);
       setSelectedSituation(null);
       setAnnotations([]);
     };
-  }, [selectedSituation, setAnnotations, setSelectedFrame, setSelectedSituation]);
+  }, [setAnnotations, setSelectedFrame, setSelectedSituation]);
 
   return (
     <div

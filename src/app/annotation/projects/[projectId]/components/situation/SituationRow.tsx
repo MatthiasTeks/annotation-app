@@ -15,14 +15,15 @@ import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import DeleteModal from '@/components/DeleteModal';
 import { deleteSituation } from '@/app/actions/situation-actions';
 import { useSituationStore } from '../../../../providers/situation-store-provider';
+import { useMemo } from 'react';
 
 export const SituationRow = ({ situation }: { situation: AnnotationSituation }) => {
   const selectedSituation = useSituationStore((state) => state.selectedSituation);
   const setSelectedSituation = useSituationStore((state) => state.setSelectedSituation);
 
-  const isActiveLink = (situation: AnnotationSituation) => {
+  const isActiveLink = useMemo(() => {
     return selectedSituation?.id === situation.id;
-  };
+  }, [selectedSituation, situation.id]);
 
   const handleClick = () => {
     setSelectedSituation(situation);
@@ -34,7 +35,7 @@ export const SituationRow = ({ situation }: { situation: AnnotationSituation }) 
         <ContextMenuTrigger>
           <div
             key={situation.id}
-            className={`${isActiveLink(situation) ? 'text-primary' : ''} cursor-pointer`}
+            className={`${isActiveLink ? 'text-primary' : ''} cursor-pointer`}
             onClick={handleClick}
           >
             <p key={situation.id} className='text-sm flex items-center gap-2'>
