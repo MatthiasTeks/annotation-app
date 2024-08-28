@@ -1,10 +1,10 @@
 import Typography from '@/components/others/Typography';
-import NewProject from './components/NewProject';
 import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ProjectList } from './components/ProjectList';
 import { auth } from '@/helpers/auth';
 import { redirect } from 'next/navigation';
+import ProjectModal from './components/ProjectModal';
 
 export default async function Page() {
   const session = await auth();
@@ -15,7 +15,7 @@ export default async function Page() {
     <div className='text-white w-full'>
       <div className='inline-block'>
         <Suspense fallback={<Skeleton className='w-[300px] h-[20px] rounded-xl' />}>
-          <NewProject session={session} />
+          <ProjectModal session={session} />
         </Suspense>
       </div>
       <div className='pt-10'>

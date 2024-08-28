@@ -4,15 +4,12 @@ import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-export async function createProject(userId: any, formData: FormData) {
+export async function createProject(formData: FormData) {
   const rawFormData = {
     projectName: formData.get('project-name'),
     projectDescription: formData.get('project-description'),
+    userId: formData.get('user-id'),
   };
-
-  if (!userId) {
-    throw new Error('User ID is required to create a project');
-  }
 
   let project;
 
@@ -21,7 +18,7 @@ export async function createProject(userId: any, formData: FormData) {
       data: {
         name: rawFormData.projectName as string,
         description: rawFormData.projectDescription as string,
-        userId: userId,
+        userId: rawFormData.userId as string,
       },
     });
   } catch (error) {
