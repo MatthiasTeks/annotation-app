@@ -4,40 +4,45 @@ import { prisma } from '@/lib/prisma';
 import { AnnotationSituation } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import fs from 'node:fs/promises';
+import { z } from 'zod';
+
+const schema = z.object({
+  projectId: z
+    .string()
+    .min(1, 'Project ID is required')
+    .transform((val) => parseInt(val, 10))
+    .refine((val) => !isNaN(val), { message: 'Project ID must be a valid number' }),
+  name: z.string().min(1, 'Situation name is required'),
+  file: z.instanceof(File).refine((file) => file.size > 0, 'File is required'),
+});
 
 export async function createSituation(prevState: any, formData: FormData) {
-  const rawFormData = {
+  const validatedFields = schema.safeParse({
     projectId: formData.get('project-id'),
     name: formData.get('project-name'),
     file: formData.get('project-file') as File,
-  };
+  });
 
-  if (!rawFormData.projectId) {
-    throw new Error('Project ID is required to create a situation');
+  if (!validatedFields.success) {
+    return { message: 'Failed to create situation' };
   }
-
-  const projectId = parseInt(rawFormData.projectId as string);
-
-  if (isNaN(projectId)) {
-    throw new Error('Project ID must be a valid number');
-  }
-
-  const arrayBuffer = await rawFormData.file.arrayBuffer();
-  const buffer = new Uint8Array(arrayBuffer);
-  await fs.writeFile(`./public/uploads/${rawFormData.file.name}`, buffer);
 
   try {
+    const arrayBuffer = await validatedFields.data.file.arrayBuffer();
+    const buffer = new Uint8Array(arrayBuffer);
+    await fs.writeFile(`./public/uploads/${validatedFields.data.file.name}`, buffer);
+
     const situation = await prisma.annotationSituation.create({
       data: {
-        name: rawFormData.name as string,
+        name: validatedFields.data.name as string,
         project: {
-          connect: { id: projectId },
+          connect: { id: validatedFields.data.projectId },
         },
       },
     });
     await prisma.annotationFrame.create({
       data: {
-        filename: rawFormData.file.name,
+        filename: validatedFields.data.file.name,
         timestamp: new Date(),
         situation: {
           connect: { id: situation.id },
@@ -48,7 +53,7 @@ export async function createSituation(prevState: any, formData: FormData) {
       },
     });
 
-    revalidatePath(`/annotation/projects/${projectId}`);
+    revalidatePath(`/annotation/projects/${validatedFields.data.projectId}`);
     return { success: true };
   } catch (error) {
     console.error(error);

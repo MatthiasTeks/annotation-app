@@ -4,6 +4,34 @@ import { prisma } from '@/lib/prisma';
 import { revalidateTag } from 'next/cache';
 import { z } from 'zod';
 
+const schema = z.object({
+  frameId: z
+    .string()
+    .min(1, 'Frame ID is required')
+    .transform((val) => parseInt(val, 10))
+    .refine((val) => !isNaN(val), { message: 'Frame ID must be a valid number' }),
+
+  projectId: z
+    .string()
+    .min(1, 'Project ID is required')
+    .transform((val) => parseInt(val, 10))
+    .refine((val) => !isNaN(val), { message: 'Project ID must be a valid number' }),
+
+  x: z
+    .string()
+    .min(1, 'Position X is required')
+    .transform((val) => parseFloat(val))
+    .refine((val) => !isNaN(val), { message: 'Position X must be a valid number' }),
+
+  y: z
+    .string()
+    .min(1, 'Position Y is required')
+    .transform((val) => parseFloat(val))
+    .refine((val) => !isNaN(val), { message: 'Position Y must be a valid number' }),
+
+  name: z.string().optional().default('Unnamed Annotation'),
+});
+
 export async function deleteAnnotation(annotationId: number) {
   try {
     await prisma.annotation.delete({
@@ -48,53 +76,27 @@ export async function getFirstAnnotationFrameByProjectId(projectId: number) {
   return null;
 }
 
-const annotationSchema = z.object({
-  frameId: z
-    .string()
-    .min(1, 'Frame ID is required')
-    .transform((val) => parseInt(val, 10))
-    .refine((val) => !isNaN(val), { message: 'Frame ID must be a valid number' }),
-
-  projectId: z
-    .string()
-    .min(1, 'Project ID is required')
-    .transform((val) => parseInt(val, 10))
-    .refine((val) => !isNaN(val), { message: 'Project ID must be a valid number' }),
-
-  x: z
-    .string()
-    .min(1, 'Position X is required')
-    .transform((val) => parseFloat(val))
-    .refine((val) => !isNaN(val), { message: 'Position X must be a valid number' }),
-
-  y: z
-    .string()
-    .min(1, 'Position Y is required')
-    .transform((val) => parseFloat(val))
-    .refine((val) => !isNaN(val), { message: 'Position Y must be a valid number' }),
-
-  name: z.string().optional().default('Unnamed Annotation'),
-});
-
 export async function createAnnotation(prevState: any, formData: FormData) {
-  const rawFormData = {
+  const validatedFields = schema.safeParse({
     frameId: formData.get('frame-id'),
     projectId: formData.get('project-id'),
     x: formData.get('x-position'),
     y: formData.get('y-position'),
     name: formData.get('annotation-name'),
-  };
+  });
 
-  const parsedData = annotationSchema.parse(rawFormData);
+  if (!validatedFields.success) {
+    return { message: 'Failed to create annotation' };
+  }
 
   try {
     const annotation = await prisma.annotation.create({
       data: {
-        posX: parsedData.x,
-        posY: parsedData.y,
-        name: parsedData.name,
+        posX: validatedFields.data.x,
+        posY: validatedFields.data.y,
+        name: validatedFields.data.name,
         frame: {
-          connect: { id: parsedData.frameId },
+          connect: { id: validatedFields.data.frameId },
         },
       },
       include: {

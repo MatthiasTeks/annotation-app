@@ -5,14 +5,14 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
-const projectSchema = z.object({
+const schema = z.object({
   projectName: z.string().min(1, 'Project name is required'),
   projectDescription: z.string().min(1, 'Project description is required'),
   userId: z.string().min(1, 'User ID is required'),
 });
 
 export async function createProject(prevState: any, formData: FormData) {
-  const validatedFields = projectSchema.safeParse({
+  const validatedFields = schema.safeParse({
     projectName: formData.get('project-name'),
     projectDescription: formData.get('project-description'),
     userId: formData.get('user-id'),
