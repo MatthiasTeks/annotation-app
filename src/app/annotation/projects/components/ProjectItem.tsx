@@ -49,7 +49,7 @@ export default async function ProjectItem({ project }: { project: AnnotationProj
               )}
             </div>
             <div>
-              <Typography>{project.name}</Typography>
+              <Typography variant='paragraph'>{project.name}</Typography>
               <Typography variant='small'>Édité {timeAgo}</Typography>
             </div>
           </Link>

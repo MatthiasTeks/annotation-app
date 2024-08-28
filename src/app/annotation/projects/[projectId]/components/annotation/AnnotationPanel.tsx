@@ -1,13 +1,14 @@
 import { Separator } from '@/components/ui/separator';
 import AnnotationList from './AnnotationList';
+import Typography from '@/components/others/Typography';
 
 export default function AnnotationPanel() {
   return (
     <div className='text-white p-2 h-full'>
       <div>
         <div className='space-y-1'>
-          <h4 className='text-sm font-medium leading-none'>Annotations</h4>
-          <p className='text-sm text-muted-foreground'>Annotation situation list.</p>
+          <Typography variant='heading'>Annotations</Typography>
+          <Typography variant='subheading'>Annotation situation list.</Typography>
         </div>
         <Separator className='my-4' />
       </div>

@@ -22,7 +22,7 @@ export default function ProjectModal({ session }: { session: Session }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <div className='cursor-pointer flex items-center px-4 gap-4 py-4 w-[300px] bg-card p-2 rounded-xl  h-full'>
+        <div className='cursor-pointer flex items-center px-4 gap-4 py-4 w-[300px] bg-card p-2 rounded-xl border border-border h-full'>
           <div className='bg-green-500 rounded-full h-10 w-10 flex justify-center items-center'>
             <NotebookPenIcon className='h-5 w-5' />
           </div>

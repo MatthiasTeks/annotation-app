@@ -18,6 +18,7 @@ import { deleteAnnotation } from '@/app/actions/annotation-actions';
 import DeleteConfirmation from '@/app/components/DeleteConfirmation';
 import { fetchAnnotations } from '@/services/annotation-service';
 import { useAnnotationsStore } from '@/app/annotation/providers/annotation-store-provider';
+import Typography from '@/components/others/Typography';
 
 export default function AnnotationList() {
   const selectedFrame = useFrameStore((state) => state.selectedFrame);
@@ -49,10 +50,10 @@ const AnnotationRow = ({ annotation }: { annotation: Annotation }) => {
     <AlertDialog>
       <ContextMenu>
         <ContextMenuTrigger>
-          <p key={annotation.id} className='text-sm flex items-center gap-2'>
+          <Typography key={annotation.id} variant='paragraph' className='flex items-center gap-2'>
             <CrosshairIcon className='mr-2 h-4 w-4' />
             {annotation.name}
-          </p>
+          </Typography>
         </ContextMenuTrigger>
         <ContextMenuContent className='w-64'>
           <ContextMenuItem inset>

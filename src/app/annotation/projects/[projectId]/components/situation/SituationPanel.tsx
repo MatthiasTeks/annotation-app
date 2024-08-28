@@ -2,6 +2,7 @@ import SituationList from './SituationList';
 import { Separator } from '@/components/ui/separator';
 import { getSituations } from '@/app/actions/situation-actions';
 import SituationModal from './SituationModal';
+import Typography from '@/components/others/Typography';
 
 export default async function SituationPanel({ projectId }: { projectId: string }) {
   const projectIdNumber = parseInt(projectId, 10);
@@ -12,8 +13,8 @@ export default async function SituationPanel({ projectId }: { projectId: string 
     <div className='text-white p-2'>
       <div>
         <div className='space-y-1'>
-          <h4 className='text-sm font-medium leading-none'>Situations</h4>
-          <p className='text-sm text-muted-foreground'>Curated Situations for AI Annotation.</p>
+          <Typography variant='heading'>Situations</Typography>
+          <Typography variant='subheading'>Curated Situations for AI Annotation.</Typography>
         </div>
         <Separator className='my-4' />
       </div>

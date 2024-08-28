@@ -9,22 +9,22 @@ interface TypographyProps {
 }
 
 export default function Typography({ variant = 'paragraph', customClass, className, children }: TypographyProps) {
-  const baseClasses = 'font-poppins text-white';
+  const baseClasses = 'font-poppins';
 
   let variantClasses = '';
 
   switch (variant) {
     case 'heading':
-      variantClasses = 'text-xl font-bold';
+      variantClasses = 'text-md font-bold text-foreground';
       break;
     case 'subheading':
-      variantClasses = 'text-lg font-light';
+      variantClasses = 'text-sm text-muted-foreground';
       break;
     case 'paragraph':
-      variantClasses = 'text-sm font-normal';
+      variantClasses = 'text-sm font-normal text-foreground';
       break;
     case 'small':
-      variantClasses = 'text-xs font-light';
+      variantClasses = 'text-xs text-foreground';
       break;
     default:
       variantClasses = 'text-base';
