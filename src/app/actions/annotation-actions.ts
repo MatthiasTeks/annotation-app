@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 import { z } from 'zod';
 
 export async function deleteAnnotation(annotationId: number) {
@@ -12,7 +12,7 @@ export async function deleteAnnotation(annotationId: number) {
       },
     });
 
-    revalidatePath('/annotation/projects/[projectId]');
+    revalidateTag('annotation');
     return { message: 'Successfully deleted annotation' };
   } catch (error) {
     console.error('Error deleting annotation:', error);
@@ -61,13 +61,13 @@ const annotationSchema = z.object({
     .transform((val) => parseInt(val, 10))
     .refine((val) => !isNaN(val), { message: 'Project ID must be a valid number' }),
 
-  posX: z
+  x: z
     .string()
     .min(1, 'Position X is required')
     .transform((val) => parseFloat(val))
     .refine((val) => !isNaN(val), { message: 'Position X must be a valid number' }),
 
-  posY: z
+  y: z
     .string()
     .min(1, 'Position Y is required')
     .transform((val) => parseFloat(val))
@@ -80,8 +80,8 @@ export async function createAnnotation(prevState: any, formData: FormData) {
   const rawFormData = {
     frameId: formData.get('frame-id'),
     projectId: formData.get('project-id'),
-    posX: formData.get('x-position'),
-    posY: formData.get('y-position'),
+    x: formData.get('x-position'),
+    y: formData.get('y-position'),
     name: formData.get('annotation-name'),
   };
 
@@ -90,8 +90,8 @@ export async function createAnnotation(prevState: any, formData: FormData) {
   try {
     const annotation = await prisma.annotation.create({
       data: {
-        posX: parsedData.posX,
-        posY: parsedData.posY,
+        posX: parsedData.x,
+        posY: parsedData.y,
         name: parsedData.name,
         frame: {
           connect: { id: parsedData.frameId },
@@ -102,7 +102,7 @@ export async function createAnnotation(prevState: any, formData: FormData) {
       },
     });
 
-    revalidatePath(`/annotation/projects/${rawFormData.projectId}`);
+    revalidateTag('annotation');
     return { annotation: annotation };
   } catch (error) {
     console.error('Error creating annotation:', error);
