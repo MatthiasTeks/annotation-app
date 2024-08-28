@@ -2,7 +2,7 @@
 
 import { useFrameStore } from '../../../providers/frame-store-provider';
 import React, { useEffect } from 'react';
-import { drawFrame } from '@/services/frame-service';
+import { drawFrame } from '@/helpers/frame';
 
 type Props = {
   canvasRef: React.RefObject<HTMLCanvasElement>;

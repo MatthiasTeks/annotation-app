@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useSituationStore } from '../../../providers/situation-store-provider';
 import Frame from './Frame';
 import { useFrameStore } from '../../../providers/frame-store-provider';
-import { calculateDisplayStreamSizes, handleImageClickAndGetImageCoords } from '@/services/frame-service';
+import { calculateDisplayStreamSizes, handleImageClickAndGetImageCoords } from '@/helpers/frame';
 import { useResizeDetector } from 'react-resize-detector';
 import { useActionStore } from '../../../providers/action-store-provider';
 import AnnotationLayer from './annotation/AnnotationLayer';

@@ -1,5 +1,5 @@
 import { useAnnotationsStore } from '@/app/annotation/providers/annotation-store-provider';
-import { getImageDisplayCoordinates } from '@/services/frame-service';
+import { getImageDisplayCoordinates } from '@/helpers/frame';
 import { ClickedPosition, DisplaySize, FrameSizes, Marker } from '@/types/types';
 import { useMemo } from 'react';
 

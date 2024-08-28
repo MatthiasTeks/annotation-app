@@ -4,7 +4,7 @@ import { useActionStore } from '../../../../providers/action-store-provider';
 import { useFormState } from 'react-dom';
 import AnnotationForm from './AnnotationForm';
 import { ClickedPosition, DisplaySize } from '@/types/types';
-import { calculateModalPosition } from '@/services/frame-service';
+import { calculateModalPosition } from '@/helpers/frame';
 import { createAnnotation } from '@/app/actions/annotation-actions';
 
 type Props = {
