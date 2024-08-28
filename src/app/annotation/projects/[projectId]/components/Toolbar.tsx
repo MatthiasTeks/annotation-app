@@ -2,7 +2,7 @@
 
 import { Separator } from '@/components/ui/separator';
 import { CirclePlusIcon, CrosshairIcon, MessageCircleIcon } from 'lucide-react';
-import { useActionStore } from '../../providers/annotation-store-provider';
+import { useActionStore } from '../../../providers/action-store-provider';
 import { UserAction } from '@/stores/user-action-store';
 
 export default function Toolbar() {

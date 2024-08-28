@@ -1,6 +1,6 @@
 'use client';
 
-import { useFrameStore } from '../../providers/frame-store-provider';
+import { useFrameStore } from '../../../providers/frame-store-provider';
 import React, { useEffect } from 'react';
 import { drawFrame } from '@/services/frame-service';
 

@@ -3,7 +3,7 @@
 import { AnnotationSituation } from '@prisma/client';
 import { SituationRow } from './SituationRow';
 import { useEffect } from 'react';
-import { useSituationStore } from '../../../providers/situation-store-provider';
+import { useSituationStore } from '../../../../providers/situation-store-provider';
 
 export default function SituationList({ situations }: { situations: AnnotationSituation[] }) {
   const setSelectedSituation = useSituationStore((state) => state.setSelectedSituation);

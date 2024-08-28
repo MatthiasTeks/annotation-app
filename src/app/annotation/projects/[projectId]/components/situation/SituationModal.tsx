@@ -1,7 +1,7 @@
 'use client';
 
 import { AnnotationSituation } from '@prisma/client';
-import { useActionStore } from '../../../providers/annotation-store-provider';
+import { useActionStore } from '../../../../providers/action-store-provider';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useEffect, useState } from 'react';
 import { useFormState } from 'react-dom';
