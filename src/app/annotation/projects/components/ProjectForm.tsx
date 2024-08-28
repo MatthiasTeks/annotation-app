@@ -1,4 +1,3 @@
-import { createProject } from '@/app/actions/project-actions';
 import { Button } from '@/components/ui/button';
 import { DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -8,11 +7,12 @@ import { Textarea } from '@/components/ui/textarea';
 type Props = {
   userId: string;
   setOpen: (open: boolean) => void;
+  action: (payload: FormData) => void;
 };
 
-export default function ProjectForm({ userId, setOpen }: Props) {
+export default function ProjectForm({ userId, setOpen, action }: Props) {
   return (
-    <form action={createProject}>
+    <form action={action}>
       <div className='grid gap-4 py-4'>
         <div className='grid grid-cols-6 items-center gap-4'>
           <Label htmlFor='project-name' className='text-left col-span-1'>
@@ -35,9 +35,7 @@ export default function ProjectForm({ userId, setOpen }: Props) {
         </div>
       </div>
       <DialogFooter>
-        <Button type='submit' onClick={() => setOpen(false)}>
-          Submit
-        </Button>
+        <Button type='submit'>Submit</Button>
       </DialogFooter>
     </form>
   );

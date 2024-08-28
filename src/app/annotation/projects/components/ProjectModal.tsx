@@ -13,8 +13,11 @@ import { NotebookPenIcon } from 'lucide-react';
 import { Session } from 'next-auth';
 import { useState } from 'react';
 import ProjectForm from './ProjectForm';
+import { useFormState } from 'react-dom';
+import { createProject } from '@/app/actions/project-actions';
 
 export default function ProjectModal({ session }: { session: Session }) {
+  const [state, action] = useFormState(createProject, { message: '' });
   const [open, setOpen] = useState(false);
 
   if (!session?.user?.id) return null;
@@ -37,7 +40,7 @@ export default function ProjectModal({ session }: { session: Session }) {
           <DialogTitle>New project</DialogTitle>
           <DialogDescription>Make changes to your profile here. Click save when you&apos;re done.</DialogDescription>
         </DialogHeader>
-        <ProjectForm userId={session.user.id} setOpen={setOpen} />
+        <ProjectForm userId={session.user.id} setOpen={setOpen} action={action} />
       </DialogContent>
     </Dialog>
   );

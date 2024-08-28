@@ -3,22 +3,33 @@
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { z } from 'zod';
 
-export async function createProject(formData: FormData) {
-  const rawFormData = {
+const projectSchema = z.object({
+  projectName: z.string().min(1, 'Project name is required'),
+  projectDescription: z.string().min(1, 'Project description is required'),
+  userId: z.string().min(1, 'User ID is required'),
+});
+
+export async function createProject(prevState: any, formData: FormData) {
+  const validatedFields = projectSchema.safeParse({
     projectName: formData.get('project-name'),
     projectDescription: formData.get('project-description'),
     userId: formData.get('user-id'),
-  };
+  });
+
+  if (!validatedFields.success) {
+    return { message: 'Failed to create project' };
+  }
 
   let project;
 
   try {
     project = await prisma.annotationProject.create({
       data: {
-        name: rawFormData.projectName as string,
-        description: rawFormData.projectDescription as string,
-        userId: rawFormData.userId as string,
+        name: validatedFields.data.projectName,
+        description: validatedFields.data.projectDescription,
+        userId: validatedFields.data.userId,
       },
     });
   } catch (error) {
