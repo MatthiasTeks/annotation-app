@@ -3,7 +3,7 @@ import { createStore } from 'zustand/vanilla';
 
 export interface FrameState {
   selectedFrame: AnnotationFrame | null;
-  setSelectedFrame: (frame: AnnotationFrame) => void;
+  setSelectedFrame: (frame: AnnotationFrame | null) => void;
 }
 
 export const defaultFrameState: FrameState = {

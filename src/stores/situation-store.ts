@@ -3,7 +3,7 @@ import { createStore } from 'zustand/vanilla';
 
 export interface SituationState {
   selectedSituation: AnnotationSituation | null;
-  setSelectedSituation: (situation: AnnotationSituation) => void;
+  setSelectedSituation: (situation: AnnotationSituation | null) => void;
 }
 
 export const defaultSituationState: SituationState = {

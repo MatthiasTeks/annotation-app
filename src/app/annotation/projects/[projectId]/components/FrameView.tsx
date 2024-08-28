@@ -9,11 +9,14 @@ import { useResizeDetector } from 'react-resize-detector';
 import { useActionStore } from '../../../providers/action-store-provider';
 import AnnotationLayer from './annotation/AnnotationLayer';
 import { ClickedPosition } from '@/types/types';
+import { useAnnotationsStore } from '@/app/annotation/providers/annotation-store-provider';
 
 export default function FrameView() {
   const userAction = useActionStore((state) => state.userAction);
   const selectedSituation = useSituationStore((state) => state.selectedSituation);
   const setSelectedFrame = useFrameStore((state) => state.setSelectedFrame);
+  const setSelectedSituation = useSituationStore((state) => state.setSelectedSituation);
+  const setAnnotations = useAnnotationsStore((state) => state.setAnnotations);
 
   const [clickedPosition, setClickedPosition] = useState<ClickedPosition | null>(null);
   const [frameSizes, setFrameSizes] = useState({ width: 0, height: 0, ratio: 0 });
@@ -49,7 +52,13 @@ export default function FrameView() {
     if (selectedSituation?.id) {
       fetchFrames();
     }
-  }, [selectedSituation, setSelectedFrame]);
+
+    return () => {
+      setSelectedFrame(null);
+      setSelectedSituation(null);
+      setAnnotations([]);
+    };
+  }, [selectedSituation, setAnnotations, setSelectedFrame, setSelectedSituation]);
 
   return (
     <div
