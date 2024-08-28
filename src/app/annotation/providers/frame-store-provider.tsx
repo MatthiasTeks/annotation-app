@@ -9,7 +9,6 @@ export type FrameStoreApi = ReturnType<typeof createFrameStore>;
 
 const FrameStoreContext = createContext<FrameStoreApi | undefined>(undefined);
 
-// eslint-disable-next-line no-unused-vars
 export function useFrameStore<T>(selector: (state: FrameState) => T): T {
   const store = useContext(FrameStoreContext);
   if (!store) {

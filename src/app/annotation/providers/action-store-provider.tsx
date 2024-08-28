@@ -8,7 +8,6 @@ export type AnnotationStoreApi = ReturnType<typeof createUserActionStore>;
 
 const UserActionStoreContext = createContext<AnnotationStoreApi | undefined>(undefined);
 
-// eslint-disable-next-line no-unused-vars
 export function useActionStore<T>(selector: (state: UserActionState) => T): T {
   const userAction = useContext(UserActionStoreContext);
   if (!userAction) {

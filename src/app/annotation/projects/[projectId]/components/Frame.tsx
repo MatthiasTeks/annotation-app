@@ -6,7 +6,6 @@ import { drawFrame } from '@/services/frame-service';
 
 type Props = {
   canvasRef: React.RefObject<HTMLCanvasElement>;
-  // eslint-disable-next-line no-unused-vars
   setFrameSizes: (frameSizes: { width: number; height: number; ratio: number }) => void;
 };
 

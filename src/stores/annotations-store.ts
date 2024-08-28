@@ -3,7 +3,6 @@ import { createStore } from 'zustand/vanilla';
 
 export interface AnnotationsState {
   annotations: Annotation[];
-  // eslint-disable-next-line no-unused-vars
   setAnnotations: (annotations: Annotation[]) => void;
 }
 

@@ -4,7 +4,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 type Props = {
-  // eslint-disable-next-line no-unused-vars
   action: (payload: FormData) => void;
   projectId: number;
 };

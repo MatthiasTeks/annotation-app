@@ -9,7 +9,6 @@ export type SituationStoreApi = ReturnType<typeof createSituationStore>;
 
 const SituationStoreContext = createContext<SituationStoreApi | undefined>(undefined);
 
-// eslint-disable-next-line no-unused-vars
 export function useSituationStore<T>(selector: (state: SituationState) => T): T {
   const store = useContext(SituationStoreContext);
   if (!store) {

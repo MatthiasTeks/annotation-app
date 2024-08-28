@@ -4,7 +4,6 @@ export type UserAction = 'editingSegment' | 'addingComment' | 'addingSituation' 
 
 export interface UserActionState {
   userAction: UserAction;
-  // eslint-disable-next-line no-unused-vars
   setUserAction: (action: UserAction) => void;
 }
 

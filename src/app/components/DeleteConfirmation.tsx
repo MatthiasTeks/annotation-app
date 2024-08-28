@@ -11,7 +11,6 @@ import {
 } from '@/components/ui/alert-dialog';
 
 type DeleteConfirmationProps = {
-  // eslint-disable-next-line no-unused-vars
   onDelete: (id: number) => void;
   id: number;
 };

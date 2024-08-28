@@ -3,7 +3,6 @@ import { createStore } from 'zustand/vanilla';
 
 export interface FrameState {
   selectedFrame: AnnotationFrame | null;
-  // eslint-disable-next-line no-unused-vars
   setSelectedFrame: (frame: AnnotationFrame) => void;
 }
 

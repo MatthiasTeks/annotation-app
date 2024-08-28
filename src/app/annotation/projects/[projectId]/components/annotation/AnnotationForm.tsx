@@ -7,7 +7,6 @@ import { useFrameStore } from '../../../../providers/frame-store-provider';
 import { useParams } from 'next/navigation';
 
 type Props = {
-  // eslint-disable-next-line no-unused-vars
   action: (payload: FormData) => void;
   xPosition: number;
   yPosition: number;
