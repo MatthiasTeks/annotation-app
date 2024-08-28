@@ -1,16 +1,23 @@
 import React, { Fragment } from 'react';
 import AnnotationModal from './AnnotationModal';
-import { ClickedPosition } from '@/types/types';
+import { ClickedPosition, DisplaySize, FrameSizes } from '@/types/types';
 import AnnotationMarkers from './AnnotationMarkers';
 
 type Props = {
   children: React.ReactNode;
   clickedPosition: ClickedPosition | null;
   setClickedPosition: React.Dispatch<React.SetStateAction<ClickedPosition | null>>;
-  displaySizes: { width: number; height: number };
+  frameSizes: FrameSizes;
+  displaySizes: DisplaySize;
 };
 
-export default function AnnotationLayer({ children, clickedPosition, setClickedPosition, displaySizes }: Props) {
+export default function AnnotationLayer({
+  children,
+  clickedPosition,
+  setClickedPosition,
+  frameSizes,
+  displaySizes,
+}: Props) {
   return (
     <Fragment>
       {children}
@@ -21,7 +28,7 @@ export default function AnnotationLayer({ children, clickedPosition, setClickedP
           setClickedPosition={setClickedPosition}
         />
       )}
-      <AnnotationMarkers clickedPosition={clickedPosition} />
+      <AnnotationMarkers clickedPosition={clickedPosition} frameSizes={frameSizes} displaySizes={displaySizes} />
     </Fragment>
   );
 }

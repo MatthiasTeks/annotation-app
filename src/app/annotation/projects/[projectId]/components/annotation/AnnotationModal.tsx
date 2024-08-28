@@ -1,21 +1,20 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import React, { useEffect, useRef, useState } from 'react';
-import { useActionStore } from '../../../providers/annotation-store-provider';
+import { useActionStore } from '../../../../providers/action-store-provider';
 import { useFormState } from 'react-dom';
 import AnnotationForm from './AnnotationForm';
-import { ClickedPosition } from '@/types/types';
+import { ClickedPosition, DisplaySize } from '@/types/types';
 import { calculateModalPosition } from '@/services/frame-service';
 import { createAnnotation } from '@/app/actions/annotation-actions';
 
 type Props = {
-  displaySizes: { width: number; height: number };
+  displaySizes: DisplaySize;
   clickedPosition: ClickedPosition;
   setClickedPosition: React.Dispatch<React.SetStateAction<ClickedPosition | null>>;
 };
 
 export default function AnnotationModal({ displaySizes, clickedPosition, setClickedPosition }: Props) {
-  const { position } = clickedPosition;
-
+  const { position, clientPosition } = clickedPosition;
   const setUserAction = useActionStore((state) => state.setUserAction);
   const [state, action] = useFormState(createAnnotation, { annotation: null });
 
@@ -32,12 +31,12 @@ export default function AnnotationModal({ displaySizes, clickedPosition, setClic
     setOpen(isOpen);
   };
 
+  // Position the modal so that it does not reach the edge of the screen.
   useEffect(() => {
     if (clickedPosition) {
       const positionModal = () => {
         if (modalRef.current) {
-          const { globalPosition } = clickedPosition;
-          const { top, left } = calculateModalPosition(globalPosition, modalRef.current, 20);
+          const { top, left } = calculateModalPosition(clientPosition, modalRef.current, 20);
           setModalTop(top);
           setModalLeft(left);
         }
@@ -45,14 +44,16 @@ export default function AnnotationModal({ displaySizes, clickedPosition, setClic
 
       requestAnimationFrame(positionModal);
     }
-  }, [clickedPosition, displaySizes]);
+  }, [clickedPosition, clientPosition, displaySizes]);
 
+  // If the form submission is successful, reset several states.
   useEffect(() => {
     if (state.annotation?.id) {
       setOpen(false);
       setUserAction('viewOnly');
+      setClickedPosition(null);
     }
-  }, [state.annotation, setUserAction]);
+  }, [state.annotation, setUserAction, setClickedPosition]);
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>

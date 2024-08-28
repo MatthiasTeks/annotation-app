@@ -1,3 +1,4 @@
+import { DisplaySize, FrameSizes } from '@/types/types';
 import { AnnotationFrame } from '@prisma/client';
 import React from 'react';
 
@@ -70,37 +71,50 @@ export const calculateDisplayStreamSizes = (
   }
 };
 
-// Function to get the coordinates of the mouse click relative to the image container
-export const getRelativeImageCoordinates = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-  const rect = (e.target as HTMLDivElement).getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-  return { x, y };
+// Get the coordinates of the mouse click relative to the image container
+export const getClickCoordinatesRelativeToImage = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const imageRect = (event.target as HTMLDivElement).getBoundingClientRect();
+  const relativeX = event.clientX - imageRect.left;
+  const relativeY = event.clientY - imageRect.top;
+  return { x: relativeX, y: relativeY };
 };
 
 // Function to translate display coordinates into native image coordinates
-export const getNativeImageCoordinates = (
-  displayCoordinates: { x: number; y: number },
-  cameraDimensions: { width: number; height: number },
-  displayDimensions: { width: number; height: number },
+export const convertDisplayToImageCoordinates = (
+  displayCoords: { x: number; y: number },
+  imageDimensions: { width: number; height: number },
+  viewportDimensions: { width: number; height: number },
 ) => {
-  const displayRatio = cameraDimensions.width / displayDimensions.width;
-  return { x: displayCoordinates.x * displayRatio, y: displayCoordinates.y * displayRatio };
+  const scalingFactor = imageDimensions.width / viewportDimensions.width;
+  return { x: displayCoords.x * scalingFactor, y: displayCoords.y * scalingFactor };
 };
 
 // Generic function to handle a click on the image frame, returning the native coordinates
-export const getNativeCoordinatesFromClick = (
+export const handleImageClickAndGetImageCoords = (
   canvasRef: React.RefObject<HTMLCanvasElement>,
-  e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-  frameSizes: { width: number; height: number },
-  displaySizes: { width: number; height: number },
+  event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  imageDimensions: { width: number; height: number },
+  viewportDimensions: { width: number; height: number },
 ) => {
   if (canvasRef.current) {
-    const clickCoordinates = getRelativeImageCoordinates(e);
-    const nativeCoordinates = getNativeImageCoordinates(clickCoordinates, frameSizes, displaySizes);
-    return nativeCoordinates;
+    const clickCoordsRelativeToImage = getClickCoordinatesRelativeToImage(event);
+    const imageCoords = convertDisplayToImageCoordinates(
+      clickCoordsRelativeToImage,
+      imageDimensions,
+      viewportDimensions,
+    );
+    return imageCoords;
   }
   return null;
+};
+
+export const getImageDisplayCoordinates = (
+  positions: { x: number; y: number },
+  frameSizes: FrameSizes,
+  displayDimensions: DisplaySize,
+) => {
+  const displayRatio = frameSizes.width / displayDimensions.width;
+  return { x: positions.x / displayRatio, y: positions.y / displayRatio };
 };
 
 export function calculateModalPosition(

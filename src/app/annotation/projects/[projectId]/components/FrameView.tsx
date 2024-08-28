@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useSituationStore } from '../../providers/situation-store-provider';
+import { useSituationStore } from '../../../providers/situation-store-provider';
 import Frame from './Frame';
-import { useFrameStore } from '../../providers/frame-store-provider';
-import { calculateDisplayStreamSizes, getNativeCoordinatesFromClick } from '@/services/frame-service';
+import { useFrameStore } from '../../../providers/frame-store-provider';
+import { calculateDisplayStreamSizes, handleImageClickAndGetImageCoords } from '@/services/frame-service';
 import { useResizeDetector } from 'react-resize-detector';
-import { useActionStore } from '../../providers/annotation-store-provider';
+import { useActionStore } from '../../../providers/action-store-provider';
 import AnnotationLayer from './annotation/AnnotationLayer';
 import { ClickedPosition } from '@/types/types';
 
@@ -31,14 +31,10 @@ export default function FrameView() {
     if (userAction !== 'editingSegment') return;
     if (clickedPosition !== null) return;
 
-    const nativeCoordinates = getNativeCoordinatesFromClick(canvasRef, e, frameSizes, displaySizes);
-    const globalCoordinates = { x: e.clientX, y: e.clientY };
+    const coordinates = handleImageClickAndGetImageCoords(canvasRef, e, frameSizes, displaySizes);
 
-    if (nativeCoordinates) {
-      setClickedPosition({
-        position: nativeCoordinates,
-        globalPosition: globalCoordinates,
-      });
+    if (coordinates) {
+      setClickedPosition({ position: coordinates, clientPosition: { x: e.clientX, y: e.clientY } });
     }
   };
 
@@ -68,6 +64,7 @@ export default function FrameView() {
         <AnnotationLayer
           clickedPosition={clickedPosition}
           setClickedPosition={setClickedPosition}
+          frameSizes={frameSizes}
           displaySizes={displaySizes}
         >
           <Frame canvasRef={canvasRef} setFrameSizes={setFrameSizes} />

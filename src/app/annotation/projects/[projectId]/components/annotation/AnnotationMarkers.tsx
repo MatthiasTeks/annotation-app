@@ -1,31 +1,51 @@
-import { ClickedPosition } from '@/types/types';
-import { createPortal } from 'react-dom';
+import { useAnnotationsStore } from '@/app/annotation/providers/annotation-store-provider';
+import { getImageDisplayCoordinates } from '@/services/frame-service';
+import { ClickedPosition, DisplaySize, FrameSizes, Marker } from '@/types/types';
+import { useMemo } from 'react';
 
-type Props = {
+type AnnotationMarkerProps = {
   clickedPosition: ClickedPosition | null;
+  frameSizes: FrameSizes;
+  displaySizes: DisplaySize;
 };
 
-export default function AnnotationMarkers({ clickedPosition }: Props) {
-  if (clickedPosition === null) return null;
+export default function AnnotationMarkers({ clickedPosition, frameSizes, displaySizes }: AnnotationMarkerProps) {
+  const annotations = useAnnotationsStore((state) => state.annotations);
 
-  return createPortal(<CircleMarker clickedPosition={clickedPosition} />, document.body);
+  // Place the markers on the canvas, only place the marker if a point is clicked, otherwise place a point per annotation.
+  const markers = useMemo(() => {
+    if (clickedPosition) {
+      return [clickedPosition.position];
+    }
+
+    return annotations?.length > 0 ? annotations.map((annotation) => ({ x: annotation.posX, y: annotation.posY })) : [];
+  }, [annotations, clickedPosition]);
+
+  if (markers.length === 0) return null;
+
+  return markers.map((marker, index) => (
+    <CircleMarker key={index} marker={marker} frameSizes={frameSizes} displaySizes={displaySizes} />
+  ));
 }
 
-const CircleMarker = ({ clickedPosition }: { clickedPosition: ClickedPosition }) => {
-  const { globalPosition } = clickedPosition;
+type CircleMarkerProps = {
+  marker: Marker;
+  frameSizes: FrameSizes;
+  displaySizes: DisplaySize;
+};
 
-  const top = globalPosition.y;
-  const left = globalPosition.x;
-
+const CircleMarker = ({ marker, frameSizes, displaySizes }: CircleMarkerProps) => {
   const baseClass =
     'bg-transparent z-50 shadow-lg absolute rounded-full w-6 h-6 border-8 cursor-pointer border-primary';
+
+  const coordinates = getImageDisplayCoordinates(marker, frameSizes, displaySizes);
 
   return (
     <div
       className={baseClass}
       style={{
-        top: top - 3,
-        left: left - 3,
+        top: coordinates.y - 3,
+        left: coordinates.x - 3,
         position: 'absolute',
       }}
     />
