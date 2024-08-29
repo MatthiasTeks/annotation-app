@@ -19,6 +19,7 @@ import DeleteModal from '@/components/DeleteModal';
 import { fetchAnnotations } from '@/services/annotation-service';
 import { useAnnotationsStore } from '@/app/annotation/providers/annotation-store-provider';
 import Typography from '@/components/Typography';
+import { useActionStore } from '@/app/annotation/providers/action-store-provider';
 
 export default function AnnotationList() {
   const selectedFrame = useFrameStore((state) => state.selectedFrame);
@@ -48,6 +49,7 @@ export default function AnnotationList() {
 const AnnotationRow = ({ annotation }: { annotation: Annotation }) => {
   const annotationSelected = useAnnotationsStore((state) => state.annotationSelected);
   const setAnnotationSelected = useAnnotationsStore((state) => state.setAnnotationSelected);
+  const setUserAction = useActionStore((state) => state.setUserAction);
 
   const isActiveLink = useMemo(() => {
     return annotationSelected?.id === annotation.id;
@@ -55,6 +57,7 @@ const AnnotationRow = ({ annotation }: { annotation: Annotation }) => {
 
   const handleClick = () => {
     setAnnotationSelected(annotation);
+    setUserAction('viewOnly');
   };
 
   return (
