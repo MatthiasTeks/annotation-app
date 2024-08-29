@@ -1,14 +1,20 @@
-import { ReactNode } from 'react';
+import { HTMLAttributes, ReactNode } from 'react';
 import clsx from 'clsx';
 
-interface TypographyProps {
+interface TypographyProps extends HTMLAttributes<HTMLParagraphElement> {
   variant?: 'heading' | 'subheading' | 'paragraph' | 'small';
   customClass?: string;
   className?: string;
   children: ReactNode;
 }
 
-export default function Typography({ variant = 'paragraph', customClass, className, children }: TypographyProps) {
+export default function Typography({
+  variant = 'paragraph',
+  customClass,
+  className,
+  children,
+  ...props
+}: TypographyProps) {
   const baseClasses = 'font-poppins';
 
   let variantClasses = '';
@@ -32,5 +38,9 @@ export default function Typography({ variant = 'paragraph', customClass, classNa
 
   const textSize = customClass || variantClasses;
 
-  return <p className={clsx(baseClasses, textSize, className)}>{children}</p>;
+  return (
+    <p className={clsx(baseClasses, textSize, className)} {...props}>
+      {children}
+    </p>
+  );
 }

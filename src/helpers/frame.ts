@@ -118,32 +118,34 @@ export const getImageDisplayCoordinates = (
 };
 
 export function calculateModalPosition(
-  clickPosition: { x: number; y: number },
+  positions: { x: number; y: number },
   modalElement: HTMLDivElement,
+  canvasElement: HTMLCanvasElement,
   offset: number = 20,
 ): { top: number; left: number } {
   const modalRect = modalElement.getBoundingClientRect();
+  const canvasRect = canvasElement.getBoundingClientRect();
 
-  let top = clickPosition.y + offset;
-  let left = clickPosition.x + offset;
+  let top = canvasRect.top + positions.y + offset;
+  let left = canvasRect.left + positions.x + offset;
 
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight;
 
   if (left + modalRect.width > viewportWidth) {
-    left = clickPosition.x - modalRect.width - 20;
+    left = canvasRect.left + positions.x - modalRect.width - offset;
   }
 
   if (top + modalRect.height > viewportHeight) {
-    top = clickPosition.y - modalRect.height - 20;
+    top = canvasRect.top + positions.y - modalRect.height - offset;
   }
 
   if (left < 0) {
-    left = 20;
+    left = offset;
   }
 
   if (top < 0) {
-    top = 20;
+    top = offset;
   }
 
   return { top, left };

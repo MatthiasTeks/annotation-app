@@ -37,7 +37,7 @@ export default function FrameView() {
     const coordinates = handleImageClickAndGetImageCoords(canvasRef, e, frameSizes, displaySizes);
 
     if (coordinates) {
-      setClickedPosition({ position: coordinates, clientPosition: { x: e.clientX, y: e.clientY } });
+      setClickedPosition({ position: coordinates });
     }
   };
 
@@ -77,6 +77,7 @@ export default function FrameView() {
           setClickedPosition={setClickedPosition}
           frameSizes={frameSizes}
           displaySizes={displaySizes}
+          canvasRef={canvasRef}
         >
           <Frame canvasRef={canvasRef} setFrameSizes={setFrameSizes} />
         </AnnotationLayer>

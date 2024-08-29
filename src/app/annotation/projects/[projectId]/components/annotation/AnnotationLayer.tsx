@@ -1,7 +1,9 @@
-import React, { Fragment } from 'react';
-import AnnotationModal from './AnnotationModal';
+import React, { Fragment, useMemo } from 'react';
 import { ClickedPosition, DisplaySize, FrameSizes } from '@/types/types';
 import AnnotationMarkers from './AnnotationMarkers';
+import { useAnnotationsStore } from '@/app/annotation/providers/annotation-store-provider';
+import AnnotationCreationModal from './AnnotationCreationModal';
+import AnnotationEditionModal from './AnnotationEditionModal';
 
 type Props = {
   children: React.ReactNode;
@@ -9,6 +11,7 @@ type Props = {
   setClickedPosition: React.Dispatch<React.SetStateAction<ClickedPosition | null>>;
   frameSizes: FrameSizes;
   displaySizes: DisplaySize;
+  canvasRef: React.RefObject<HTMLCanvasElement>;
 };
 
 export default function AnnotationLayer({
@@ -17,17 +20,41 @@ export default function AnnotationLayer({
   setClickedPosition,
   frameSizes,
   displaySizes,
+  canvasRef,
 }: Props) {
+  const annotationSelected = useAnnotationsStore((state) => state.annotationSelected);
+
+  const isModalOpen = useMemo(() => {
+    return clickedPosition !== null || annotationSelected !== null;
+  }, [clickedPosition, annotationSelected]);
+
+  const handleDisplayModal = () => {
+    if (clickedPosition) {
+      return (
+        <AnnotationCreationModal
+          clickedPosition={clickedPosition}
+          setClickedPosition={setClickedPosition}
+          displaySizes={displaySizes}
+          frameSizes={frameSizes}
+          canvasRef={canvasRef}
+        />
+      );
+    } else if (annotationSelected) {
+      return (
+        <AnnotationEditionModal
+          annotationSelected={annotationSelected}
+          displaySizes={displaySizes}
+          frameSizes={frameSizes}
+          canvasRef={canvasRef}
+        />
+      );
+    }
+  };
+
   return (
     <Fragment>
       {children}
-      {clickedPosition && (
-        <AnnotationModal
-          displaySizes={displaySizes}
-          clickedPosition={clickedPosition}
-          setClickedPosition={setClickedPosition}
-        />
-      )}
+      {isModalOpen && handleDisplayModal()}
       <AnnotationMarkers clickedPosition={clickedPosition} frameSizes={frameSizes} displaySizes={displaySizes} />
     </Fragment>
   );

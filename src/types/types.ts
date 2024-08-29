@@ -1,6 +1,5 @@
 export interface ClickedPosition {
   position: { x: number; y: number };
-  clientPosition: { x: number; y: number };
 }
 
 export interface DisplaySize {

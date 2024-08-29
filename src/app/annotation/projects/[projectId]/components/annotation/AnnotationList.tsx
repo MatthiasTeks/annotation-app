@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useFrameStore } from '../../../../providers/frame-store-provider';
 import { CrosshairIcon } from 'lucide-react';
 import { Annotation } from '@prisma/client';
@@ -46,11 +46,27 @@ export default function AnnotationList() {
 }
 
 const AnnotationRow = ({ annotation }: { annotation: Annotation }) => {
+  const annotationSelected = useAnnotationsStore((state) => state.annotationSelected);
+  const setAnnotationSelected = useAnnotationsStore((state) => state.setAnnotationSelected);
+
+  const isActiveLink = useMemo(() => {
+    return annotationSelected?.id === annotation.id;
+  }, [annotationSelected, annotation.id]);
+
+  const handleClick = () => {
+    setAnnotationSelected(annotation);
+  };
+
   return (
     <AlertDialog>
       <ContextMenu>
         <ContextMenuTrigger>
-          <Typography key={annotation.id} variant='paragraph' className='flex items-center gap-2'>
+          <Typography
+            key={annotation.id}
+            variant='paragraph'
+            className={`${isActiveLink ? 'text-primary' : ''} flex items-center gap-2 cursor-pointer`}
+            onClick={handleClick}
+          >
             <CrosshairIcon className='mr-2 h-4 w-4' />
             {annotation.name}
           </Typography>
