@@ -3,6 +3,7 @@ import UserMenu from './UserMenu';
 import ModeToggle from './ModeToggle';
 import Logo from './Logo';
 import Link from 'next/link';
+import { GithubButton } from './GithubButton';
 
 export default function Navbar() {
   return (
@@ -15,6 +16,7 @@ export default function Navbar() {
       </div>
       <div className='flex items-center gap-4'>
         <ModeToggle />
+        <GithubButton />
         <UserMenu />
       </div>
     </div>
