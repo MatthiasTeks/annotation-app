@@ -42,7 +42,7 @@ export default async function ProjectItem({ project }: { project: AnnotationProj
             <div className='border border-1 border-gray-500 rounded-lg p-4 flex flex-col items-center gap-2 h-[100px] w-[250px] relative'>
               {projetPreview && (
                 <Image
-                  src={`${FILE_DIR}/${projetPreview.filename}`}
+                  src={`${FILE_DIR}${projetPreview.filename}`}
                   alt='Preview'
                   fill
                   sizes='(min-width: 200px) 50vw, 100vw'
