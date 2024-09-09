@@ -1,7 +1,10 @@
 import path from 'path';
 import fs from 'fs';
 
-const UPLOAD_DIR = path.resolve(process.env.ROOT_PATH_FILE ?? '', 'public/uploads/');
+// const UPLOAD_DIR = path.resolve(process.env.FILE_DIR_UPLOAD ?? 'public/', 'uploads/');
+const UPLOAD_DIR = path.resolve(process.env.ROOT_PATH_UPLOAD_FILE ?? '', 'uploads/');
+
+console.log(UPLOAD_DIR);
 
 export const uploadFile = async (file: File): Promise<{ success: boolean; message: string }> => {
   try {

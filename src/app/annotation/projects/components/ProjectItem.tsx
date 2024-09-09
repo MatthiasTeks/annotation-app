@@ -25,6 +25,10 @@ import DeleteModal from '@/components/DeleteModal';
 import { deleteProject } from '@/app/actions/project-actions';
 import { getFirstAnnotationFrameByProjectId } from '@/app/actions/annotation-actions';
 
+const FILE_DIR = process.env.NEXT_PUBLIC_FILE_DIR;
+
+console.log('file', FILE_DIR);
+
 export default async function ProjectItem({ project }: { project: AnnotationProject }) {
   const projetPreview = await getFirstAnnotationFrameByProjectId(project.id);
 
@@ -38,7 +42,7 @@ export default async function ProjectItem({ project }: { project: AnnotationProj
             <div className='border border-1 border-gray-500 rounded-lg p-4 flex flex-col items-center gap-2 h-[100px] w-[250px] relative'>
               {projetPreview && (
                 <Image
-                  src={`/uploads/${projetPreview.filename}`}
+                  src={`${FILE_DIR}/${projetPreview.filename}`}
                   alt='Preview'
                   fill
                   sizes='(min-width: 200px) 50vw, 100vw'

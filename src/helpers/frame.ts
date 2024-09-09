@@ -2,6 +2,10 @@ import { DisplaySize, FrameSizes } from '@/types/types';
 import { AnnotationFrame } from '@prisma/client';
 import React from 'react';
 
+const FILE_DIR = process.env.NEXT_PUBLIC_FILE_DIR;
+
+console.log('file', FILE_DIR);
+
 export const drawFrame = async ({
   selectedFrame,
   canvasRef,
@@ -13,7 +17,7 @@ export const drawFrame = async ({
   const context = canvasRef.current.getContext('2d');
   if (context === null) return;
 
-  const framePath = `/uploads/${selectedFrame.filename}`;
+  const framePath = `${FILE_DIR}${selectedFrame.filename}`;
   const img = new Image();
   img.crossOrigin = 'anonymous';
   img.src = framePath;
