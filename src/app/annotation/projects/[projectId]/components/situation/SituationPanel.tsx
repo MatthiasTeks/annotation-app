@@ -1,14 +1,15 @@
 import SituationList from './SituationList';
 import { Separator } from '@/components/ui/separator';
-import { getSituations } from '@/app/actions/situation-actions';
 import SituationModal from './SituationModal';
 import Typography from '@/components/Typography';
+import { AnnotationSituation } from '@prisma/client';
 
-export default async function SituationPanel({ projectId }: { projectId: string }) {
-  const projectIdNumber = parseInt(projectId, 10);
+type Props = {
+  situations: AnnotationSituation[] | null;
+  projectId: number;
+};
 
-  const situations = await getSituations(projectIdNumber);
-
+export default async function SituationPanel({ situations, projectId }: Props) {
   return (
     <div className='text-white p-2'>
       <div>
@@ -19,7 +20,7 @@ export default async function SituationPanel({ projectId }: { projectId: string 
         <Separator className='my-4' />
       </div>
       <div className='mt-2'>{situations && situations.length > 0 && <SituationList situations={situations} />}</div>
-      <SituationModal situations={situations} projectId={projectIdNumber} />
+      <SituationModal projectId={projectId} situations={situations} />
     </div>
   );
 }

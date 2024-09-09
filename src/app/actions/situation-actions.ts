@@ -57,10 +57,10 @@ export async function createSituation(prevState: any, formData: FormData) {
     });
 
     revalidatePath(`/annotation/projects/${validatedFields.data.projectId}`);
-    return { success: true };
+    return { success: true, situationId: situation.id };
   } catch (error) {
     console.error(error);
-    return { success: false };
+    return { success: false, situationId: null };
   }
 }
 

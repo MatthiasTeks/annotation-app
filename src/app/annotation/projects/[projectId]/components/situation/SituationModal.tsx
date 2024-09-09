@@ -7,19 +7,20 @@ import { useEffect, useState } from 'react';
 import { useFormState } from 'react-dom';
 import { createSituation } from '@/app/actions/situation-actions';
 import SituationForm from './SituationForm';
+import { useSituationStore } from '@/app/annotation/providers/situation-store-provider';
 
 type SituationModalProps = {
-  situations: AnnotationSituation[] | null;
   projectId: number;
+  situations: AnnotationSituation[] | null;
 };
 
-export default function SituationModal({ situations, projectId }: SituationModalProps) {
+export default function SituationModal({ projectId, situations }: SituationModalProps) {
   const userAction = useActionStore((state) => state.userAction);
   const setUserAction = useActionStore((state) => state.setUserAction);
-  const hasSituations = situations && situations.length > 0;
+  const setSelectedSituation = useSituationStore((state) => state.setSelectedSituation);
 
-  const [open, setOpen] = useState(true);
-  const [state, action] = useFormState(createSituation, { success: false });
+  const [open, setOpen] = useState(false);
+  const [state, action] = useFormState(createSituation, { success: false, situationId: null });
 
   const handleOpenChange = (isOpen: boolean) => {
     if (!isOpen) {
@@ -29,13 +30,25 @@ export default function SituationModal({ situations, projectId }: SituationModal
   };
 
   useEffect(() => {
+    if (userAction === 'addingSituation') {
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
+  }, [userAction]);
+
+  useEffect(() => {
     if (state.success) {
+      const createdSituation = situations?.find((situation) => situation.id === state.situationId);
       setOpen(false);
       setUserAction('viewOnly');
+      if (createdSituation) {
+        setSelectedSituation(createdSituation);
+      }
     }
-  }, [state.success, projectId, setUserAction]);
+  }, [state, projectId, setUserAction, situations, setSelectedSituation]);
 
-  if (userAction !== 'addingSituation' && hasSituations) return null;
+  if (userAction !== 'addingSituation') return null;
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
