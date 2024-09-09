@@ -1,9 +1,9 @@
 'use server';
 
+import { uploadFile } from './../../services/upload-service';
 import { prisma } from '@/lib/prisma';
 import { AnnotationSituation } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
-import fs from 'node:fs/promises';
 import { z } from 'zod';
 
 const schema = z.object({
@@ -13,7 +13,7 @@ const schema = z.object({
     .transform((val) => parseInt(val, 10))
     .refine((val) => !isNaN(val), { message: 'Project ID must be a valid number' }),
   name: z.string().min(1, 'Situation name is required'),
-  file: z.instanceof(File).refine((file) => file.size > 0, 'File is required'),
+  file: z.any(),
 });
 
 export async function createSituation(prevState: any, formData: FormData) {
@@ -28,9 +28,12 @@ export async function createSituation(prevState: any, formData: FormData) {
   }
 
   try {
-    const arrayBuffer = await validatedFields.data.file.arrayBuffer();
-    const buffer = new Uint8Array(arrayBuffer);
-    await fs.writeFile(`./public/uploads/${validatedFields.data.file.name}`, buffer);
+    const file = validatedFields.data.file as File;
+    const response = await uploadFile(file);
+
+    if (!response.success) {
+      throw new Error(response.message);
+    }
 
     const situation = await prisma.annotationSituation.create({
       data: {
